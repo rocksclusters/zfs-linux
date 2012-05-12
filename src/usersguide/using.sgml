@@ -1,0 +1,33 @@
+<chapter id="using" xreflabel="Using the zfs-linux Roll">
+
+
+<title>Using the zfs-linux Roll</title>
+
+<section id="using-zfs-linux" xreflabel="Using the zfs-linux roll">
+<title>Using the zfs-linux Roll</title>
+
+<para>
+General Informatio about ZFS on Linux and be found at 
+the <ulink url="http://zfsonlinux.org/">
+zfs on linux web site</ulink>. 
+General Tutorials for Using ZFS on Linux and be found at 
+the <ulink url="http://zfsonlinux.org/">
+zfs on linux documentation</ulink>. 
+</para>
+</section>
+<section id="updating-linux" xreflabel="Updateing Device Drivers">
+<title>Updating The Device Drivers</title>
+
+<para>
+The Rocks ZFS-linux roll comes with a small helper script in
+<computeroutput>/opt/zfs/bin/zfs-rebuild-module.sh</computeroutput>.
+If your client node runs a different kernel (via updates or other choice),
+then running this script will rebuild the zfs modules.
+<screen>
+# cd /opt/zfs
+# ./bin/zfs-rebuild-module.sh
+</screen>
+</para>
+</section>
+
+</chapter>

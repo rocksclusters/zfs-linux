@@ -1,0 +1,46 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	This is the ZFS on Linux Roll
+
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log: zfs-linux.xml,v $
+	Revision 1.1  2012/05/12 06:34:17  phil
+	Start of ZFS on Linux Roll
+	
+	</changelog>
+	<!-- System Packages -->
+	<package>zlib-devel</package>
+	<package>libuuid-devel</package>
+	<package>libblkid-devel</package>
+	<package>libselinux-devel</package>
+	<package>parted</package>
+	<package>lsscsi</package>
+
+	<!-- ZFS Packages -->
+	<package>spl</package>
+	<package>spl-modules</package>
+	<package>spl-modules-devel</package>
+	<package>zfs</package>
+	<package>zfs-devel</package>
+	<package>zfs-dracut</package>
+	<package>zfs-modules</package>
+	<package>zfs-modules-devel</package>
+	<package>zfs-test</package>
+
+	<!-- *modules* packages can be rebuilt if server and clients have
+             different kernel versions. See /opt/zfs/bin -->
+	<package>zfs-source-modules</package>
+	<package>roll-zfs-linux-usersguide</package>
+</kickstart>

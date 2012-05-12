@@ -1,0 +1,46 @@
+<chapter id="installing" xreflabel="Installing">
+
+
+<title>Installing the zfs-linux Roll</title>
+
+<section id="adding-the-roll" xreflabel="Adding the Roll">
+<title>Getting the Roll</title>
+
+<para>
+The zfs-linux roll is supplied in source form <emphasis>ONLY</emphasis>.
+This is to comply with the licensing of ZFS that does not allow binary redistribution.   
+</para>
+
+<para>
+Assuming you have the Roll source in place on either a Rocks Development Server or a Rocks frontend. Simply do the following in the top level roll 
+directory
+<screen>
+# ./bootstrap.sh
+# make roll
+</screen>
+</para>
+<para>
+If you build on a development server, you must copy the created iso image
+to the frontend and add then roll on the frontend:
+<screen>
+# rocks add roll zfs-linux*iso
+# rocks enable roll zfs-linux
+# pushd /export/rocks/install
+# rocks create distro
+# popd
+</screen>
+</para>
+
+<para>
+At this point, any <emphasis>client</emphasis> nodes can be reinstalled with
+ZFS support. You can enable ZFS on your frontend by  
+<screen>
+# rocks run roll zfs-linux | sh
+</screen>
+</para>
+
+
+</section>
+
+
+</chapter>

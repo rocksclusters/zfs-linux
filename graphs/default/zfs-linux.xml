@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+
+<graph>
+
+	<description>
+
+	The zfs-linux Roll
+
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log: zfs-linux.xml,v $
+	Revision 1.1  2012/05/12 06:34:17  phil
+	Start of ZFS on Linux Roll
+	
+	</changelog>
+
+	<!-- add edges here -->
+
+	<edge from="base">
+	     <to>zfs-linux</to>
+	</edge>
+</graph>

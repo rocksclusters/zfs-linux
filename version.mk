@@ -1,0 +1,6 @@
+ROLLNAME	= zfs-linux
+VERSION		= 0.6.0
+RELEASE		= 0
+COLOR		= blue
+
+REDHAT.ROOT	= $(CURDIR)
