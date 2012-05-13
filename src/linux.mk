@@ -6,7 +6,8 @@ SRCDIRS = `find * -prune\
 	  ! -name spl \
 	  ! -name zfs-source-modules`
 
-ifndef ZFS-SOURCE-ONLY
+ifdef ZFS-BINARY-ROLL
+# Build the ZFS Binaries 
 # Order of Build is important: zfs-source-modules includes the SRPMS built
 # by spl and zfs
 SRCDIRS += spl zfs zfs-source-modules

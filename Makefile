@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.2 2012/05/13 19:25:19 phil Exp $
+# $Id: Makefile,v 1.3 2012/05/13 20:45:00 phil Exp $
 #
 # @Copyright@
 # 
@@ -56,6 +56,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.3  2012/05/13 20:45:00  phil
+# Simplify the source vs. binary roll creation logic
+#
 # Revision 1.2  2012/05/13 19:25:19  phil
 # Updating method for building, updating of modules when you have updated the kernel,
 # documentation
@@ -64,13 +67,6 @@
 # Start of ZFS on Linux Roll
 #
 #
-
-
-# This is defined so that that default make "roll" will build
-# a binary roll that has source only.
-ifndef ZFS-BINARY-ROLL
-ZFS-SOURCE-ONLY = True
-endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
