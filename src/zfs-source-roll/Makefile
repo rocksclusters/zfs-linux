@@ -1,5 +1,5 @@
-#
-# $Id: Makefile,v 1.2 2012/05/13 19:25:19 phil Exp $
+# --------------------------------------------------- -*- Makefile -*- --
+# $Id: Makefile,v 1.1 2012/05/13 19:25:20 phil Exp $
 #
 # @Copyright@
 # 
@@ -56,41 +56,28 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
-# Revision 1.2  2012/05/13 19:25:19  phil
+# Revision 1.1  2012/05/13 19:25:20  phil
 # Updating method for building, updating of modules when you have updated the kernel,
 # documentation
 #
-# Revision 1.1  2012/05/12 06:34:17  phil
+# Revision 1.1  2012/05/12 06:34:18  phil
 # Start of ZFS on Linux Roll
 #
-#
 
+REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/zfs
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
 
-# This is defined so that that default make "roll" will build
-# a binary roll that has source only.
-ifndef ZFS-BINARY-ROLL
-ZFS-SOURCE-ONLY = True
-endif
+build:
 
--include $(ROLLSROOT)/etc/Rolls.mk
-include Rolls.mk
-
-default: roll
-
-bootstrap:
-	sh ./bootstrap.sh
-
-binary-roll: bootstrap
-	make ZFS-BINARY-ROLL="True" roll
-
-binary-roll-nobootstrap:
-	make ZFS-BINARY-ROLL="True" roll
+install::
+	mkdir -p $(ROOT)/$(PKGROOT)/zfs-linux-roll-source
+	( 	tmptar=`mktemp`;  \
+	 	tar cf $$tmptar $(REDHAT.ROOT)* --exclude RPMS --exclude CVS --exclude SRPMS; \
+	 	(cd $(ROOT)/$(PKGROOT)/zfs-linux-roll-source; tar xvfBp $$tmptar; \
+		make ZFS-BINARY-ROLL="True" veryclean; /bin/rm $$tmptar; ); \
+	)
 
 clean::
-	- /bin/rm _arch
-	- /bin/rm bootstrap.py 
-
-clean-rpms:
-	- /bin/rm -r RPMS SRPMS
-
-veryclean: clean-rpms clean
+	rm -f $(NAME).spec.in

@@ -1,14 +1,21 @@
+#!/bin/sh
 #
-# $Id: Makefile,v 1.2 2012/05/13 19:25:19 phil Exp $
+# $Id: zfs-modules,v 1.1 2012/05/13 19:25:20 phil Exp $
+#
+# chkconfig: 36 01 99
+#
+# description: Rebuild the spl and zfs kernel modules 
+#
+# This startup script will check if if the current spl and zfs modules exist,
+# and rebuilds if needed
 #
 # @Copyright@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		         version 5.5 (Mamba)
-# 		         version 6.0 (Mamba)
+# 		         version 5.4.3 (Viper)
 # 
-# Copyright (c) 2000 - 2012 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +34,7 @@
 # features or use of this software must display the following acknowledgement: 
 # 
 # 	"This product includes software developed by the Rocks(r)
-# 	Cluster Group at the San Diego Supercomputer Center at the
+# 	Development Team at the San Diego Supercomputer Center at the
 # 	University of California, San Diego and its contributors."
 # 
 # 4. Except as permitted for the purposes of acknowledgment in paragraph 3,
@@ -55,42 +62,30 @@
 # 
 # @Copyright@
 #
-# $Log: Makefile,v $
-# Revision 1.2  2012/05/13 19:25:19  phil
+# $Log: zfs-modules,v $
+# Revision 1.1  2012/05/13 19:25:20  phil
 # Updating method for building, updating of modules when you have updated the kernel,
 # documentation
 #
-# Revision 1.1  2012/05/12 06:34:17  phil
-# Start of ZFS on Linux Roll
 #
 #
+. /etc/rc.d/init.d/functions
 
+case "$1" in
+start)
+	action "ZFS Modules: checking for up-to-date modules:" \
+		make -C /opt/zfs rebuild 
+	touch /var/lock/subsys/zfs-modules
+	;;
 
-# This is defined so that that default make "roll" will build
-# a binary roll that has source only.
-ifndef ZFS-BINARY-ROLL
-ZFS-SOURCE-ONLY = True
-endif
+stop)
+	rm -f /var/lock/subsys/zfs-modules
+	;;
 
--include $(ROLLSROOT)/etc/Rolls.mk
-include Rolls.mk
+*)
+	echo "Usage: $0 {start|stop}"
+	RETVAL=1	
+esac
 
-default: roll
+exit $RETVAL
 
-bootstrap:
-	sh ./bootstrap.sh
-
-binary-roll: bootstrap
-	make ZFS-BINARY-ROLL="True" roll
-
-binary-roll-nobootstrap:
-	make ZFS-BINARY-ROLL="True" roll
-
-clean::
-	- /bin/rm _arch
-	- /bin/rm bootstrap.py 
-
-clean-rpms:
-	- /bin/rm -r RPMS SRPMS
-
-veryclean: clean-rpms clean

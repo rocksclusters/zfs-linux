@@ -1,5 +1,5 @@
 # --------------------------------------------------- -*- Makefile -*- --
-# $Id: Makefile,v 1.1 2012/05/12 06:34:18 phil Exp $
+# $Id: Makefile,v 1.2 2012/05/13 19:25:20 phil Exp $
 #
 # @Copyright@
 # 
@@ -56,6 +56,10 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.2  2012/05/13 19:25:20  phil
+# Updating method for building, updating of modules when you have updated the kernel,
+# documentation
+#
 # Revision 1.1  2012/05/12 06:34:18  phil
 # Start of ZFS on Linux Roll
 #
@@ -65,7 +69,9 @@ PKGROOT = /opt/zfs
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
+INITSCRIPTS = zfs-modules 
 SCRIPTS = zfs-rebuild-module.sh
+MAKEFILE.REBUILD = Makefile.rebuild
 
 SRPMS = $(wildcard $(REDHAT.ROOT)/SRPMS/spl-modules-$(VERSION)$(RC).src.rpm)
 SRPMS += $(wildcard $(REDHAT.ROOT)/SRPMS/zfs-modules-$(VERSION)$(RC).src.rpm)
@@ -77,6 +83,9 @@ install::
 	$(INSTALL) -m644  $(SRPMS)  $(ROOT)/$(PKGROOT)
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	$(INSTALL) -m755  $(SCRIPTS)  $(ROOT)/$(PKGROOT)/bin
+	$(INSTALL) -m644  $(MAKEFILE.REBUILD)  $(ROOT)/$(PKGROOT)/Makefile
+	mkdir -p $(ROOT)/etc/init.d
+	$(INSTALL) -m755  $(INITSCRIPTS)  $(ROOT)/etc/init.d
 	
 clean::
 	rm -f $(NAME).spec.in

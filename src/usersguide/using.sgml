@@ -19,13 +19,14 @@ zfs on linux documentation</ulink>.
 <title>Updating The Device Drivers</title>
 
 <para>
-The Rocks ZFS-linux roll comes with a small helper script in
-<computeroutput>/opt/zfs/bin/zfs-rebuild-module.sh</computeroutput>.
+The Rocks ZFS-linux roll comes with a Makefile 
+<computeroutput>/opt/zfs/Makefile</computeroutput>.
 If your client node runs a different kernel (via updates or other choice),
-then running this script will rebuild the zfs modules.
+then using the rebuild target of this Makefile will rebuild the spl (Solaris Porting Layer)
+and zfs kernel modules. The rebuild targets checks first if the modules already exist.
 <screen>
 # cd /opt/zfs
-# ./bin/zfs-rebuild-module.sh
+# make rebuild
 </screen>
 </para>
 </section>
