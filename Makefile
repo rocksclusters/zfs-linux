@@ -1,5 +1,5 @@
 #
-# $Id: Makefile,v 1.3 2012/05/13 20:45:00 phil Exp $
+# $Id: Makefile,v 1.4 2012/05/14 18:35:15 phil Exp $
 #
 # @Copyright@
 # 
@@ -56,6 +56,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.4  2012/05/14 18:35:15  phil
+# Install roll source on frontends
+#
 # Revision 1.3  2012/05/13 20:45:00  phil
 # Simplify the source vs. binary roll creation logic
 #
@@ -89,4 +92,5 @@ clean::
 clean-rpms:
 	- /bin/rm -r RPMS SRPMS
 
-veryclean: clean-rpms clean
+veryclean: 
+	make ZFS-BINARY-ROLL="True" clean-rpms clean

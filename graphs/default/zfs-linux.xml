@@ -16,6 +16,9 @@
 
 	<changelog>
 	$Log: zfs-linux.xml,v $
+	Revision 1.2  2012/05/14 18:35:15  phil
+	Install roll source on frontends
+	
 	Revision 1.1  2012/05/12 06:34:17  phil
 	Start of ZFS on Linux Roll
 	
@@ -23,6 +26,9 @@
 
 	<!-- add edges here -->
 
+	<edge from="server">
+	     <to>zfs-linux-server</to>
+	</edge>
 	<edge from="base">
 	     <to>zfs-linux</to>
 	</edge>

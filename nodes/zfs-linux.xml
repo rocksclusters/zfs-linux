@@ -16,6 +16,9 @@
 
 	<changelog>
 	$Log: zfs-linux.xml,v $
+	Revision 1.3  2012/05/14 18:35:15  phil
+	Install roll source on frontends
+	
 	Revision 1.2  2012/05/13 19:25:19  phil
 	Updating method for building, updating of modules when you have updated the kernel,
 	documentation
@@ -46,7 +49,7 @@
 	<!-- *modules* packages can be rebuilt if server and clients have
              different kernel versions. See /opt/zfs/bin -->
 	<package>zfs-source-modules</package>
-	<package>roll-zfs-linux-usersguide</package>
+
 <post>
 <!-- Turn on Automatic Module Rebuilding --> 
 <!-- This will only appear if the binary version of this roll has been

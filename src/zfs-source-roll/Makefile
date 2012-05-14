@@ -1,5 +1,5 @@
 # --------------------------------------------------- -*- Makefile -*- --
-# $Id: Makefile,v 1.1 2012/05/13 19:25:20 phil Exp $
+# $Id: Makefile,v 1.2 2012/05/14 18:35:15 phil Exp $
 #
 # @Copyright@
 # 
@@ -56,6 +56,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.2  2012/05/14 18:35:15  phil
+# Install roll source on frontends
+#
 # Revision 1.1  2012/05/13 19:25:20  phil
 # Updating method for building, updating of modules when you have updated the kernel,
 # documentation
@@ -76,7 +79,7 @@ install::
 	( 	tmptar=`mktemp`;  \
 	 	tar cf $$tmptar $(REDHAT.ROOT)* --exclude RPMS --exclude CVS --exclude SRPMS; \
 	 	(cd $(ROOT)/$(PKGROOT)/zfs-linux-roll-source; tar xvfBp $$tmptar; \
-		make ZFS-BINARY-ROLL="True" veryclean; /bin/rm $$tmptar; ); \
+		make veryclean; /bin/rm $$tmptar; ); \
 	)
 
 clean::
