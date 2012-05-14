@@ -3,15 +3,23 @@
 
 
 <para>
-The zfs-linux Roll installs and configures the ...
+The zfs-linux Roll installs and configures the ZFS device drivers for Linux. This
+roll implements the software available at the  
+<ulink url="http://zfsonlinux.org">ZFS on Linux</ulink> project. 
 </para>
 
-
 <para>
-Please visit the <ulink
-url="http://link-here.html">zfs-linux
-site</ulink> to learn more about their release and the individual
-software components.
+<ulink url="http://http://en.wikipedia.org/wiki/ZFS">ZFS</ulink> stands for the Zetabyte File System
+and is a combined file system and logical volume manager designed by Sun Microsystems. 
+The features of ZFS include data integrity verification against data corruption modes, 
+support for high storage capacities, integration of the concepts of filesystem and volume management, 
+snapshots and copy-on-write clones, continuous integrity checking and automatic repair, 
+RAID-Z and native NFSv4 ACLs. ZFS is implemented as open-source software, licensed under the 
+Common Development and Distribution License (CDDL). 
+The ZFS name is a trademark of Oracle. The trademark was abandoned on September 20, 2011.[1]
+</para>
+<para>
+[1] <ulink url="http://tdrapi.uspto.gov/ts/cd/casestatus/sn85194050/content.html"> U.S. Trademark Serial # 85194050 </ulink>
 </para>
 
 </preface>

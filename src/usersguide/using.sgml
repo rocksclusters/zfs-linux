@@ -29,6 +29,12 @@ and zfs kernel modules. The rebuild targets checks first if the modules already 
 # make rebuild
 </screen>
 </para>
+<note>
+<para>
+The startup script <computeroutput>/etc/init.d/zfs-modules</computeroutput> will automatically 
+check and rebuild the ZFS modules.
+</para>
+</note>
 </section>
 
 </chapter>
