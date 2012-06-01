@@ -1,6 +1,5 @@
 #
-#
-# $Id: Makefile.rebuild,v 1.1 2012/05/13 19:25:20 phil Exp $
+# $Id: Makefile.rebuild,v 1.2 2012/06/01 23:06:50 phil Exp $
 #
 # @Copyright@
 # 
@@ -58,6 +57,9 @@
 #
 #
 # $Log: Makefile.rebuild,v $
+# Revision 1.2  2012/06/01 23:06:50  phil
+# place the built rpms under /opt/zfs
+#
 # Revision 1.1  2012/05/13 19:25:20  phil
 # Updating method for building, updating of modules when you have updated the kernel,
 # documentation
@@ -71,7 +73,9 @@ ARCH = $(shell $(UNAME) -p)
 KERNEL_VERSION =$(shell $(UNAME) -r)
 KERNEL = $(shell $(UNAME) -r | $(TR) '-' '_')
 ZFS_HOME = /opt/zfs
-RPMHOME = /root/rpmbuild/RPMS/$(ARCH)
+TOPDIR = $(ZFS_HOME)/rpmbuild
+BUILDROOT = $(TOPDIR)/BUILDROOT
+RPMHOME = $(TOPDIR)/RPMS/$(ARCH)
 
 SPL-RELEASE = 0.6.0-rc8
 SPL-SRPM =  spl-modules-$(SPL-RELEASE).src.rpm
@@ -83,18 +87,22 @@ ZFS-SRPM =  zfs-modules-$(ZFS-RELEASE).src.rpm
 ZFS-MODULE = /lib/modules/$(KERNEL_VERSION)/addon/zfs/zfs/zfs.ko
 
 
-rebuild: $(SPL-MODULE) $(ZFS-MODULE)
+rebuild: DIRS $(SPL-MODULE) $(ZFS-MODULE)
 
+DIRS:
+	if [ ! -d $(BUILDROOT) ]; then \
+		mkdir -p $(BUILDROOT); \
+	fi
 $(SPL-MODULE):
 	echo "=======  Rebuilding: $(SPL-SRPM)"
-	rpmbuild --rebuild --define "require_kver $(KERNEL_VERSION)" $(SPL-SRPM) &> $(SPL-SRPM).build.out
+	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "require_kver $(KERNEL_VERSION)" $(SPL-SRPM) &> $(SPL-SRPM).build.out
 	# need to force install RPM so that zfs-module will build
 	( rpmname=`basename $(SPL-SRPM) | cut -d - -f 1,2`; \
 		rpm -ivh --force $(RPMHOME)/$${rpmname}*$(KERNEL).rpm )
 	
 $(ZFS-MODULE):
 	echo "=======  Rebuilding: $(ZFS-SRPM)"
-	rpmbuild --rebuild --define "require_kver $(KERNEL_VERSION)" $(ZFS-SRPM) &> $(ZFS-SRPM).build.out
+	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "require_kver $(KERNEL_VERSION)" $(ZFS-SRPM) &> $(ZFS-SRPM).build.out
 	# need to force install RPM so that zfs-module will build
 	( rpmname=`basename $(ZFS-SRPM) | cut -d - -f 1,2`; \
 		rpm -ivh --force $(RPMHOME)/$${rpmname}*$(KERNEL).rpm )
