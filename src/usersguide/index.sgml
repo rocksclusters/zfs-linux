@@ -1,6 +1,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
 	<!ENTITY preface    SYSTEM "preface.sgml">
 	<!ENTITY installing SYSTEM "installing.sgml">
+	<!ENTITY updating SYSTEM "updating.sgml">
 	<!ENTITY using SYSTEM "using.sgml">
 	<!ENTITY copyrights SYSTEM "copyrights.sgml">
 	<!ENTITY % entities SYSTEM "entities.sgml">
@@ -37,6 +38,7 @@
 
 &preface;
 &installing;
+&updating;
 &using;
 &copyrights;
 

@@ -16,6 +16,9 @@
 
 	<changelog>
 	$Log: zfs-linux-server.xml,v $
+	Revision 1.2  2012/07/03 02:19:31  phil
+	Update to rc9, add a section on updating an already-installed system.
+	
 	Revision 1.1  2012/05/14 18:35:15  phil
 	Install roll source on frontends
 	
@@ -32,5 +35,8 @@
 	<package>zfs-source-roll</package>
 	<package>roll-zfs-linux-usersguide</package>
 
+<post>
+/opt/rocks/bin/rocks set appliance attr frontend zfs true
+</post>
 </kickstart>
 

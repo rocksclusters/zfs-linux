@@ -1,0 +1,78 @@
+<chapter id="updating" xreflabel="Updating">
+
+
+<title>Updating the zfs-linux Roll</title>
+
+<section id="updating-the-roll" xreflabel="Updating the Roll">
+<title>Updating the Roll</title>
+
+<para>
+ZFS on Linux is still an in-development software and has reasonably frequent
+updates. It is often useful to update the zfs software without resorting to
+a full reinstallation of a system.  This section will describe how to do that
+and at the same time make sure the roll is in the <emphasis>local cluster</emphasis> distribution.    
+</para>
+
+<para>
+This version of the zfs-linux roll requires you to manually build and add the binary version 
+of the roll.
+</para>
+
+<warning>
+<para>
+The roll follows the process at http://zfsonlinux.org to build rpms.  This has the effect of 
+installing zfs kernel modules on your frontend. If you do not want this, then you should
+build on a development server appliance.
+</para>
+</warning>
+
+<section id="updating-the-roll-from-git" xreflabel="Updating the Roll From Git">
+<title>Getting the updated roll source</title>
+
+<para>
+If the ZFS source roll is not available for the version of ZFS-on-Linux that
+you require, then you should go to git.rocksclusters.org. In particular,
+<computeroutput>http://http://git.rocksclusters.org/cgi-bin/gitweb.cgi?p=core/zfs-linux/.git;a=summary</computeroutput>.   The simplest is to retrieve a
+snapshot of either the labeled version of the Roll, or the "master/origin".
+On the page above, there is a "snapshot" link that, when selected, will create
+a tar.gz file of the roll.   Download this file and unpack it the contents in a local directory. The following, uses revision 32495f5 as an example
+<screen>
+# cd /opt/zfs/zfs-linux-roll-source
+# tar xvf  zfs-linux-32495f5.tar.gz
+# cd zfs-linux-32495f5
+# make binary roll
+</screen>
+</para>
+<note>
+<para>
+Please see the section on "Installing the Roll" to see a proper build. Remember to add the binary roll (iso image) that was created above and then recreate 
+the distribution on the frontend
+</para>
+</note>
+<para>
+Now that your updated binary has been created, you can update the RPMS of 
+a system that has its ZFS RPMS already installed. On the node (this works also for a frontend)
+<screen>
+# yum clean all 
+# yum update 
+# reboot 
+</screen>
+</para>
+
+<para>
+You may see an error that lsscsi package does not exist. This is because the 
+package is not part of the standard OS roll, but is part of the CentOS
+Distribution. To fix this problem
+<screen>
+# yum --enable-repo=base install lsscsi 
+# yum update
+# reboot
+</screen>
+</para>
+</section>
+
+
+</section>
+
+
+</chapter>
