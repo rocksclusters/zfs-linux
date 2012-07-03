@@ -64,7 +64,7 @@ You may see an error that lsscsi package does not exist. This is because the
 package is not part of the standard OS roll, but is part of the CentOS
 Distribution. To fix this problem
 <screen>
-# yum --enable-repo=base install lsscsi 
+# yum --enablerepo=base install lsscsi 
 # yum update
 # reboot
 </screen>
