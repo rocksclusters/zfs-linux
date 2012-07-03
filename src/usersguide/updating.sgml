@@ -40,7 +40,7 @@ a tar.gz file of the roll.   Download this file and unpack it the contents in a 
 # cd /opt/zfs/zfs-linux-roll-source
 # tar xvf  zfs-linux-32495f5.tar.gz
 # cd zfs-linux-32495f5
-# make binary roll
+# make binary-roll
 </screen>
 </para>
 <note>
