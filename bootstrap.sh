@@ -2,7 +2,7 @@
 #
 # This file should remain OS independent
 #
-# $Id: bootstrap.sh,v 1.1 2012/05/12 06:34:17 phil Exp $
+# $Id: bootstrap.sh,v 1.2 2012/07/11 17:07:30 phil Exp $
 #
 # @Copyright@
 # 
@@ -59,6 +59,10 @@
 # @Copyright@
 #
 # $Log: bootstrap.sh,v $
+# Revision 1.2  2012/07/11 17:07:30  phil
+# Add zfs-linux to the set of rolls for 6/x86_64.
+# Remove binary rpms created during bootstrap of zfs-linux roll to build a pristine source roll.
+#
 # Revision 1.1  2012/05/12 06:34:17  phil
 # Start of ZFS on Linux Roll
 #
@@ -71,5 +75,11 @@ if [ `./_os` == "linux" ]; then
 	install spl 
 	install spl-modules
 	install spl-modules-devel
+
+	# remove the binary RPMS that were just created to make a pristine
+        # source-only roll
+	find RPMS -name '*rpm' -exec /bin/rm {} \;
 fi
+
+
 
