@@ -1,5 +1,5 @@
 # --------------------------------------------------- -*- Makefile -*- --
-# $Id: Makefile,v 1.2 2012/05/13 19:25:20 phil Exp $
+# $Id: Makefile,v 1.3 2012/10/04 21:50:52 phil Exp $
 #
 # @Copyright@
 # 
@@ -56,6 +56,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.3  2012/10/04 21:50:52  phil
+# Update to rc11
+#
 # Revision 1.2  2012/05/13 19:25:20  phil
 # Updating method for building, updating of modules when you have updated the kernel,
 # documentation
@@ -73,8 +76,8 @@ INITSCRIPTS = zfs-modules
 SCRIPTS = zfs-rebuild-module.sh
 MAKEFILE.REBUILD = Makefile.rebuild
 
-SRPMS = $(wildcard $(REDHAT.ROOT)/SRPMS/spl-modules-$(VERSION)$(RC).src.rpm)
-SRPMS += $(wildcard $(REDHAT.ROOT)/SRPMS/zfs-modules-$(VERSION)$(RC).src.rpm)
+SRPMS = $(wildcard $(REDHAT.ROOT)/SRPMS/spl-modules-$(VERSION)$(RC)$(RELEASE).src.rpm)
+SRPMS += $(wildcard $(REDHAT.ROOT)/SRPMS/zfs-modules-$(VERSION)$(RC)$(RELEASE).src.rpm)
 
 build:
 

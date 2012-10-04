@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2012/05/12 06:34:18 phil Exp $
+# $Id: Makefile,v 1.2 2012/10/04 21:50:52 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,6 +55,9 @@
 # @Copyright@
 #
 # $Log: Makefile,v $
+# Revision 1.2  2012/10/04 21:50:52  phil
+# Update to rc11
+#
 # Revision 1.1  2012/05/12 06:34:18  phil
 # Start of ZFS on Linux Roll
 #
@@ -64,9 +67,9 @@ ARCH = $(shell /bin/uname -p)
 REDHAT.ROOT = $(CURDIR)/../../
 
 rpm pkg: RPMDIRS buildreqs
-	gunzip -c $(NAME)-$(VERSION)$(RC).$(TARBALL_POSTFIX) | $(TAR) -xf -
+	gunzip -c $(NAME)-$(VERSION)$(RC)$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 								\
-		cd $(NAME)-$(VERSION)$(RC);				\
+		cd $(NAME)-$(VERSION)$(RC)$(RELEASE);				\
 		./configure;						\
 		$(MAKE) rpm;						\
 		/bin/cp *$(ARCH).rpm $(REDHAT.ROOT)/RPMS/$(ARCH);	\
@@ -83,4 +86,4 @@ buildreqs:
 	yum -y install zlib-devel libuuid-devel libblkid-devel libselinux-devel parted lsscsi
 
 clean:
-	rm -rf $(NAME)-$(VERSION)$(RC)
+	rm -rf $(NAME)-$(VERSION)$(RC)$(RELEASE)
