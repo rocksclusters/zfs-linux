@@ -27,9 +27,9 @@ build on a development server appliance.
 </warning>
 
 <para>
-The roll source is installed in <computeroutput>/opt/zfs/zfs-linux-roll-source</computeroutput>. These files are
-contained in the called <computeroutput>zfs-linux-roll-source-0.6.0-rc8.x86_64.rpm</computeroutput> and can be
-installed on a Rocks Development Server. To remake the roll
+If you choose the zfs-linux roll from a Rocks central server, you the source form of the roll will be installed for you.
+You must then go to the directory  <computeroutput>/opt/zfs/zfs-linux-roll-source</computeroutput> and build the binary version
+of the roll. The files in that directory are contained in the called <computeroutput>zfs-linux-roll-source-0.6.0-rc12.x86_64.rpm</computeroutput>. This source can be installed on a Rocks Development Server. To make the <emphasis> binary </emphasis> version of the roll
 <screen>
 # cd /opt/zfs/zfs-linux-roll-source
 # make binary-roll
@@ -41,23 +41,24 @@ binary packages that have been built and are part of your local binary roll
 <screen>
 roll-zfs-linux-kickstart-0.6.0-0: 9f3dc5cfb37c5025924222c0707b46b2
 roll-zfs-linux-usersguide-0.6-0: 05c6edbdbcf46cc1395d9e296ab427b3
-spl-0.6.0-rc8: fb8230830b0524e0e8fe2328b2894df0
-spl-modules-0.6.0-rc8_2.6.32_220.13.1.el6: 79a11d04f63b899d8b5dd1b1c5996aae
-spl-modules-devel-0.6.0-rc8_2.6.32_220.13.1.el6: b42975737edb986f65635480f1ada7fe
-zfs-0.6.0-rc8: 9c10037dacc5595fbdcaf527181ac878
-zfs-devel-0.6.0-rc8: 073ab7f991089b46a160867c9645ad68
+spl-0.6.0-rc12: fb8230830b0524e0e8fe2328b2894df0
+spl-modules-0.6.0-rc12.6.32_220.13.1.el6: 79a11d04f63b899d8b5dd1b1c5996aae
+spl-modules-devel-0.6.0-rc12_2.6.32_220.13.1.el6: b42975737edb986f65635480f1ada7fe
+zfs-0.6.0-rc12: 9c10037dacc5595fbdcaf527181ac878
+zfs-devel-0.6.0-rc12: 073ab7f991089b46a160867c9645ad68
 zfs-dracut-0.6.0-rc8: b8e0ad3d479ab1f85ffbadfc9cf24062
-zfs-modules-0.6.0-rc8_2.6.32_220.13.1.el6: 287f75756a6aa92f8688de4b80d6c183
-zfs-modules-devel-0.6.0-rc8_2.6.32_220.13.1.el6: 5e17ca87a58e06f63bbeb6ed46b834d3
+zfs-modules-0.6.0-rc12.6.32_220.13.1.el6: 287f75756a6aa92f8688de4b80d6c183
+zfs-modules-devel-0.6.0-rc12.6.32_220.13.1.el6: 5e17ca87a58e06f63bbeb6ed46b834d3
 zfs-source-roll-0.6.0-1: 5c9de1926da9c9cd53293a7d5b60acd8
 zfs-source-modules-0.6.0-1: 13995fa53ffd2f7d12e7cd9f77336a93
-zfs-test-0.6.0-rc8: eff799a298b011bf49bf73359a4cc54e
+zfs-test-0.6.0-rc12: eff799a298b011bf49bf73359a4cc54e
 </screen>
 
 </para>
 <para>
-If you build on a development server, you must copy the created iso image
-to the frontend and then add the roll on the frontend:
+If you build on a development server, you must first copy the created iso image to the frontend.
+Once you have the iso image (in the directory where you made the binary roll on the frontend or copied
+to the frontend from a development server, you need to add the roll and rebuild the distribution.
 <screen>
 # rocks add roll zfs-linux*iso
 # rocks enable roll zfs-linux
@@ -69,13 +70,28 @@ to the frontend and then add the roll on the frontend:
 
 <para>
 At this point, any <emphasis>client</emphasis> nodes can be reinstalled with
-ZFS support. You can enable ZFS on your frontend by  
+ZFS support. You can enable ZFS on your frontend by "running" the roll on the frontend  
 <screen>
 # rocks run roll zfs-linux | sh
 </screen>
 </para>
 
 
+<section id="enabling-zfs-on-node" xreflabel="Enabling ZFS support">
+<title>Enabling ZFS Support on nodes/appliances</title>
+<para>
+Any node or appliance can have ZFS support added to it. Whether or not ZFS is installed on a node is controlled
+by an attribute called <computeroutput>zfs</computeroutput>. The attribute should be set to true, if ZFS support is
+desired for the node.
+</para>
+<para>
+Example: to enable ZFS on all NAS appliances, do the following
+<screen>
+# rocks add appliance attr nas attr=zfs value=true 
+</screen>
+</para>
+
+</section>
 </section>
 
 

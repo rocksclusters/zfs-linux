@@ -7,7 +7,7 @@
 <title>Using the zfs-linux Roll</title>
 
 <para>
-General Informatio about ZFS on Linux and be found at 
+General Information about ZFS on Linux and be found at 
 the <ulink url="http://zfsonlinux.org/">
 zfs on linux web site</ulink>. 
 General Tutorials for Using ZFS on Linux and be found at 
@@ -15,7 +15,7 @@ the <ulink url="http://zfsonlinux.org/">
 zfs on linux documentation</ulink>. 
 </para>
 </section>
-<section id="updating-linux" xreflabel="Updateing Device Drivers">
+<section id="updating-linux" xreflabel="Updating Device Drivers">
 <title>Updating The Device Drivers</title>
 
 <para>
