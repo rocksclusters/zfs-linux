@@ -1,15 +1,15 @@
 #!/bin/bash
 #
-# $Id: zfs-rebuild-module.sh,v 1.1 2012/05/12 06:34:18 phil Exp $
+# $Id: zfs-rebuild-module.sh,v 1.2 2012/11/27 00:49:42 phil Exp $
 #
 # @Copyright@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		         version 5.5 (Mamba)
-# 		         version 6.0 (Mamba)
+# 		         version 5.6 (Emerald Boa)
+# 		         version 6.1 (Emerald Boa)
 # 
-# Copyright (c) 2000 - 2012 The Regents of the University of California.
+# Copyright (c) 2000 - 2013 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,9 @@
 #
 #
 # $Log: zfs-rebuild-module.sh,v $
+# Revision 1.2  2012/11/27 00:49:42  phil
+# Copyright Storm for Emerald Boa
+#
 # Revision 1.1  2012/05/12 06:34:18  phil
 # Start of ZFS on Linux Roll
 #
