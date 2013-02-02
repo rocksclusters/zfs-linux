@@ -16,6 +16,9 @@
 
 	<changelog>
 	$Log: zfs-linux-server.xml,v $
+	Revision 1.3  2013/02/02 01:29:21  phil
+	Version rc14.
+	
 	Revision 1.2  2012/07/03 02:19:31  phil
 	Update to rc9, add a section on updating an already-installed system.
 	
@@ -37,6 +40,7 @@
 
 <post>
 /opt/rocks/bin/rocks set appliance attr frontend zfs true
+/opt/rocks/bin/rocks set appliance attr nas zfs true
 </post>
 </kickstart>
 
