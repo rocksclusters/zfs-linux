@@ -37,14 +37,26 @@
 
 	<!-- ZFS Packages -->
 	<package>spl</package>
-	<package>spl-modules</package>
-	<package>spl-modules-devel</package>
+	<package>kmod-spl-devel</package>
+	<!-- 
+		kmod-spl-$kernel_version
+		kmod-spl-devel-$kernel_version
+	-->
+	<package>kmod-spl-*</package>
+
 	<package>zfs</package>
 	<package>zfs-devel</package>
 	<package>zfs-dracut</package>
-	<package>zfs-modules</package>
-	<package>zfs-modules-devel</package>
 	<package>zfs-test</package>
+	<!-- 
+		kmod-zfs-$kernel_version
+		kmod-zfs-devel-$kernel_version
+		kmod-zfs-devel
+	-->
+	<package>kmod-zfs-*</package>
+
+
+
 
 	<!-- *modules* packages can be rebuilt if server and clients have
              different kernel versions. See /opt/zfs/bin -->
