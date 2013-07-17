@@ -79,8 +79,8 @@ INITSCRIPTS = zfs-modules
 SCRIPTS = zfs-rebuild-module.sh
 MAKEFILE.REBUILD = Makefile.rebuild
 
-SRPMS = $(wildcard $(REDHAT.ROOT)/SRPMS/spl-modules-$(VERSION)$(RC)$(RELEASE).src.rpm)
-SRPMS += $(wildcard $(REDHAT.ROOT)/SRPMS/zfs-modules-$(VERSION)$(RC)$(RELEASE).src.rpm)
+SRPMS = $(wildcard $(REDHAT.ROOT)/SRPMS/spl-kmod*.src.rpm)
+SRPMS += $(wildcard $(REDHAT.ROOT)/SRPMS/zfs-kmod*.src.rpm)
 
 build:
 
