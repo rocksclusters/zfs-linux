@@ -74,10 +74,13 @@
 . $ROLLSROOT/etc/bootstrap-functions.sh
 
 if [ `./_os` == "linux" ]; then
-	compile spl 
-	install spl 
-	install spl-modules
-	install spl-modules-devel
+	kernel_version=`uname -r`
+	compile spl
+	install spl
+	install kmod-spl-devel
+	install kmod-spl-$kernel_version
+	install kmod-spl-devel-$kernel_version
+
 
 	# remove the binary RPMS that were just created to make a pristine
         # source-only roll
