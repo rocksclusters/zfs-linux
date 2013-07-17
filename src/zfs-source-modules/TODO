@@ -1,0 +1,2 @@
+consider using dkms to properly handle kernel upgrade
+Current version of zfs 0.6.1 supports dkms (it provides two rpm for that)
