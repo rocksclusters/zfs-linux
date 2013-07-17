@@ -1,7 +1,7 @@
 ROLLNAME	= zfs-linux
 RC		= rc
-RELEASE		= 14
-VERSION		= 0.6.0.$(RC)$(RELEASE)
+RELEASE		= 1
+VERSION		= 0.6.1
 COLOR		= blue
 
 REDHAT.ROOT	= $(CURDIR)
