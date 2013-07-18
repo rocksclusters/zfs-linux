@@ -106,13 +106,13 @@ DIRS:
 	fi
 $(SPL-MODULE):
 	echo "=======  Rebuilding: $(SPL-SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "require_kver $(KERNEL_VERSION)" $(SPL-SRPM) &> $(SPL-SRPM).build.out
+	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(SPL-SRPM) &> $(SPL-SRPM).build.out
 	# need to force install RPM so that zfs-module will build
 	rpm -ivh --force $(RPMHOME)/kmod-spl*.rpm
 	
 $(ZFS-MODULE):
 	echo "=======  Rebuilding: $(ZFS-SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "require_kver $(KERNEL_VERSION)" $(ZFS-SRPM) &> $(ZFS-SRPM).build.out
+	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(ZFS-SRPM) &> $(ZFS-SRPM).build.out
 	# need to force install RPM so that zfs-module will build
 	rpm -ivh --force $(RPMHOME)/kmod-zfs*.rpm 
 	
