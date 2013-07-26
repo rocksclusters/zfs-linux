@@ -68,7 +68,26 @@
      built by the user -->
 
 if [ -f /etc/init.d/zfs-modules ]; then
-	chkconfig --add zfs-modules
+	/sbin/chkconfig --add zfs-modules
 fi
+
+
+
+
+# double check that the package with kernel number are installed
+package_version="-0.6.1-1.el6.x86_64"
+# rpm -q wants the package version in the name with these packages
+# i do not understand why....
+kernel_version="`/bin/uname -r`$package_version"
+package_list="kmod-spl-$kernel_version kmod-spl-devel-$kernel_version kmod-zfs-$kernel_version kmod-zfs-devel-$kernel_version kmod-zfs-devel"
+
+for i in $package_list; do
+        if ! rpm -q $i ; then
+                /usr/bin/yum install $i;
+        fi
+done
+
+
+
 </post>
 </kickstart>
