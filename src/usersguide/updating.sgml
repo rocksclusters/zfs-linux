@@ -31,15 +31,12 @@ build on a development server appliance.
 
 <para>
 If the ZFS source roll is not available for the version of ZFS-on-Linux that
-you require, then you should go to git.rocksclusters.org. In particular,
-<computeroutput>http://http://git.rocksclusters.org/cgi-bin/gitweb.cgi?p=core/zfs-linux/.git;a=summary</computeroutput>.   The simplest is to retrieve a
-snapshot of either the labeled version of the Roll, or the "master/origin".
-On the page above, there is a "snapshot" link that, when selected, will create
-a tar.gz file of the roll.   Download this file and unpack it the contents in a local directory. The following, uses revision 32495f5 as an example
+you require, then you should go to github.com. In particular,
+<computeroutput>https://github.com/rocksclusters/zfs-linux</computeroutput>. 
+You should clone the repository. THe following shows read-only access to the github repository. 
 <screen>
-# cd /opt/zfs/zfs-linux-roll-source
-# tar xvf  zfs-linux-32495f5.tar.gz
-# cd zfs-linux-32495f5
+# git clone https://github.com/rocksclusters/zfs-linux.git 
+# cd zfs-linux
 # make binary-roll
 </screen>
 </para>
@@ -51,14 +48,126 @@ the distribution on the frontend
 </note>
 <para>
 Now that your updated binary has been created, you can update the RPMS of 
-a system that has its ZFS RPMS already installed. On the node (this works also for a frontend)
+a system that has its ZFS RPMS already installed.  If ZFS is running on a node iit is recommended to first stop zfs and then unload the zfs modules (this works also for a frontend)
 <screen>
-# yum clean all 
-# yum update 
-# reboot 
+# zfs umount -a 
+# service zfs stop
+# rmmod zfs zcommon znvpair zavl zunicode spl zlib_deflate
 </screen>
 </para>
+<para>
+At this point, ZFS is no longer active and can be updated. The following should
+properly accomplish the update
+<screen>
+# yum clean all 
+# yum update zfs 
+# service start zfs 
+</screen>
+</para>
+<para>
+The following, very long screen dump illustrates the output of the update process. Please note it can take several minutes for the update to complete because DKMS is rebuilding modules.
+<screen>
+Loading new spl-0.6.2 DKMS files...
+First Installation: checking all kernels...
+Building only for 2.6.32-279.14.1.el6.x86_64
+Building initial module for 2.6.32-279.14.1.el6.x86_64
+Done.
 
+spl:
+Running module version sanity check.
+ - Original module
+   - This kernel never originally had a module by this name
+ - Multiple same named modules!
+   - 2 named spl.ko in /lib/modules/2.6.32-279.14.1.el6.x86_64/
+   - All instances of this module will now be stored for reference purposes ONLY
+   - Storing in /var/lib/dkms/spl/original_module/2.6.32-279.14.1.el6.x86_64/x86_64/collisions/
+     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/spl.ko
+     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/spl/spl/spl.ko
+ - Installation
+   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
+
+splat.ko:
+Running module version sanity check.
+ - Original module
+   - This kernel never originally had a module by this name
+ - Multiple same named modules!
+   - 2 named splat.ko in /lib/modules/2.6.32-279.14.1.el6.x86_64/
+   - All instances of this module will now be stored for reference purposes ONLY
+   - Storing in /var/lib/dkms/spl/original_module/2.6.32-279.14.1.el6.x86_64/x86_64/collisions/
+     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/splat.ko
+     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/spl/splat/splat.ko
+ - Installation
+   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
+Adding any weak-modules
+
+Running the post_install script:
+
+depmod...
+
+DKMS: install completed.
+  Updating   : zfs-dkms-0.6.2-1.el6.noarch                                                        3/12
+
+DKMS: install completed.
+  Updating   : zfs-dkms-0.6.2-1.el6.noarch                                                        3/12
+Loading new zfs-0.6.2 DKMS files...
+First Installation: checking all kernels...
+Building only for 2.6.32-279.14.1.el6.x86_64
+Building initial module for 2.6.32-279.14.1.el6.x86_64
+Done.
+
+zavl:
+Running module version sanity check.
+Error! Module version 5835515F233A845D5B11799 for zavl.ko
+is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (5835515F233A845D5B11799).
+You may override by specifying --force.
+
+znvpair.ko:
+Running module version sanity check.
+ - Original module
+   - This kernel never originally had a module by this name
+ - Installation
+   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
+
+zunicode.ko:
+Running module version sanity check.
+Error! Module version 943EB776D6CC4E1BCED8C36 for zunicode.ko
+is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (943EB776D6CC4E1BCED8C36).
+You may override by specifying --force.
+
+zcommon.ko:
+Running module version sanity check.
+Error! Module version AAFC52164DACC53F936858E for zcommon.ko
+is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (AAFC52164DACC53F936858E).
+You may override by specifying --force.
+
+zfs.ko:
+Running module version sanity check.
+ - Original module
+   - This kernel never originally had a module by this name
+ - Installation
+   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
+
+zpios.ko:
+Running module version sanity check.
+Error! Module version B42A8936432BDCB399805C0 for zpios.ko
+is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (B42A8936432BDCB399805C0).
+You may override by specifying --force.
+Adding any weak-modules
+
+Running the post_install script:
+
+depmod...
+
+DKMS: install completed.
+  Updating   : zfs-0.6.2-1.el6.x86_64                                                             4/12
+  Updating   : zfs-dracut-0.6.2-1.el6.x86_64                                                      5/12
+  Updating   : zfs-test-0.6.2-1.el6.x86_64                                                        6/12
+  Cleanup    : zfs-test-0.6.1-1.el6.x86_64                                                        7/12
+  Cleanup    : zfs-0.6.1-1.el6.x86_64                                                             8/12
+  Cleanup    : zfs-dracut-0.6.1-1.el6.x86_64                                                      9/12
+  Cleanup    : zfs-dkms-0.6.1-2.el6.noarch                                                       10/12
+</screen>
+</para>
 <para>
 You may see an error that lsscsi package does not exist. This is because the 
 package is not part of the standard OS roll, but is part of the CentOS
