@@ -45,10 +45,20 @@ You should clone the repository. THe following shows read-only access to the git
 Please see the section on "Installing the Roll" to see a proper build. Remember to add the binary roll (iso image) that was created above and then recreate 
 the distribution on the frontend
 </para>
+<para>
+As a quick reference you should do the following to update the zfs roll with 
+the version you just created. Removal of the old roll is recommended.
+<screen>
+# rocks remove roll zfs
+# rocks add roll zfs*iso
+# rocks enable roll zfs
+# (cd /export/rocks/install; rocks create distro)
+</screen>
+</para>
 </note>
 <para>
-Now that your updated binary has been created, you can update the RPMS of 
-a system that has its ZFS RPMS already installed.  If ZFS is running on a node iit is recommended to first stop zfs and then unload the zfs modules (this works also for a frontend)
+Now that your updated binary has been created and you have properly rebuilt the distribution, you can update the RPMS of 
+a system that has its ZFS RPMS already installed.  If ZFS is running on a node it is recommended to first stop zfs and then unload the zfs modules (this works also for a frontend)
 <screen>
 # zfs umount -a 
 # service zfs stop
