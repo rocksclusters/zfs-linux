@@ -1,5 +1,5 @@
 NAME    	= zfs
-VERSION		= 0.6.1
+VERSION		= 0.6.2
 RC		= 
 RELEASE 	= 
 TARBALL_POSTFIX	= tar.gz
