@@ -86,12 +86,12 @@ TOPDIR = $(ZFS_HOME)/rpmbuild
 BUILDROOT = $(TOPDIR)/BUILDROOT
 RPMHOME = $(TOPDIR)/RPMS/$(ARCH)
 
-SPL-RELEASE = 0.6.1
+SPL-RELEASE = 0.6.2
 SPL-SRPM =  $(wildcard  spl-kmod-$(SPL-RELEASE)-*.src.rpm)
 SPL-MODULE = /lib/modules/$(KERNEL_VERSION)/extra/spl/spl/spl.ko
 
 
-ZFS-RELEASE = 0.6.1
+ZFS-RELEASE = 0.6.2
 ZFS-SRPM =  $(wildcard  zfs-kmod-$(ZFS-RELEASE)-*.src.rpm)
 ZFS-MODULE = /lib/modules/$(KERNEL_VERSION)/extra/zfs/zfs/zfs.ko
 
