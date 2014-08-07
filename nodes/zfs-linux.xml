@@ -36,10 +36,10 @@
 	<package>lsscsi</package>
 
 	<!-- ZFS Packages -->
-	<package>libnvpair1</libnvpair1>
-	<package>libuutil1</libnvpair1>
-	<package>libzfs2</libnvpair1>
-	<package>libzpool2</libnvpair1>
+	<package>libnvpair1</package>
+	<package>libuutil1</package>
+	<package>libzfs2</package>
+	<package>libzpool2</package>
 
 	<package>spl</package>
 	<package>kmod-spl-devel</package>
