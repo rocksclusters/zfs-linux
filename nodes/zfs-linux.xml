@@ -67,20 +67,25 @@
              different kernel versions. See /opt/zfs/bin -->
 	<package>zfs-source-modules</package>
 
+	<package>zed-support</package>
 <post>
 <!-- Turn on Automatic Module Rebuilding --> 
+<!-- Turn on the ZFS event Daemon --> 
 <!-- This will only appear if the binary version of this roll has been
      built by the user -->
 
 if [ -f /etc/init.d/zfs-modules ]; then
 	/sbin/chkconfig --add zfs-modules
+	/sbin/chkconfig zfs-modules on
+	/sbin/chkconfig --add zed
+	/sbin/chkconfig zed on
 fi
 
 
 
 
 # double check that the package with kernel number are installed
-package_version="-0.6.2-1.el6.x86_64"
+package_version="-0.6.3-1.el6.x86_64"
 # rpm -q wants the package version in the name with these packages
 # i do not understand why....
 kernel_version="`/bin/uname -r`$package_version"
@@ -91,7 +96,6 @@ for i in $package_list; do
                 /usr/bin/yum install $i;
         fi
 done
-
 
 
 </post>
