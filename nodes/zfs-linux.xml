@@ -79,7 +79,12 @@ if [ -f /etc/init.d/zfs-modules ]; then
 	/sbin/chkconfig zfs-modules on
 	/sbin/chkconfig --add zed
 	/sbin/chkconfig zed on
+<file name="/etc/zfs/zed.d/zed.rc" mode="append">
+ZED_EMAIL=&Info_ClusterContact;
+ZED_EMAIL_VERBOSE=1
+</file>
 fi
+
 
 
 
