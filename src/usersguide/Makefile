@@ -69,6 +69,11 @@ include Rules.mk
 
 default: $(NAME).spec ../$(NAME)-$(VERSION).tar.gz
 
+Makefile: zfs-version.mk
+
+zfs-version.mk:
+	if [ -e ../../zfs-version.mk ]; then /bin/cp ../../zfs-version.mk .; fi 
+
 html: predoc
 	jw --backend html --dsl $(PWD)/rocks.dsl#html index.sgml 
 
@@ -90,5 +95,6 @@ install:: build
 clean::
 	rm -f *.html
 	rm -f index.pdf
+	-rm zfs-version.mk
 
 

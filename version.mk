@@ -1,7 +1,8 @@
+include zfs-version.mk
 ROLLNAME	= zfs-linux
 RC		= rc
 RELEASE		= 1
-VERSION		= 0.6.3
+VERSION		= $(ZFS_VERSION)
 COLOR		= blue
 
 REDHAT.ROOT	= $(CURDIR)

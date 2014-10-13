@@ -69,6 +69,11 @@ TAR = /bin/tar
 ARCH = $(shell /bin/uname -p)
 REDHAT.ROOT = $(CURDIR)/../../
 
+Makefile: zfs-version.mk
+
+zfs-version.mk:
+	if [ -e ../../zfs-version.mk ]; then /bin/cp ../../zfs-version.mk .; fi 
+
 rpm pkg: RPMDIRS buildreqs
 	gunzip -c $(NAME)-$(VERSION)$(RC)$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 								\
@@ -89,4 +94,5 @@ buildreqs:
 	yum -y install zlib-devel libuuid-devel libblkid-devel libselinux-devel parted lsscsi
 
 clean:
-	rm -rf $(NAME)-$(VERSION)$(RC)$(RELEASE)
+	-rm -rf $(NAME)-$(VERSION)$(RC)$(RELEASE)
+	-rm zfs-version.mk

@@ -80,6 +80,12 @@ SCRIPTS = zfs-rebuild-module.sh
 MAKEFILE.REBUILD = Makefile.rebuild
 
 SRPMS = $(wildcard $(REDHAT.ROOT)/SRPMS/spl-kmod*.src.rpm)
+
+Makefile: zfs-version.mk
+
+zfs-version.mk:
+	if [ -e ../../zfs-version.mk ]; then /bin/cp ../../zfs-version.mk .; fi
+
 SRPMS += $(wildcard $(REDHAT.ROOT)/SRPMS/zfs-kmod*.src.rpm)
 
 build:
@@ -90,8 +96,11 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	$(INSTALL) -m755  $(SCRIPTS)  $(ROOT)/$(PKGROOT)/bin
 	$(INSTALL) -m644  $(MAKEFILE.REBUILD)  $(ROOT)/$(PKGROOT)/Makefile
+	$(INSTALL) -m644  zfs-version.mk  $(ROOT)/$(PKGROOT)
 	mkdir -p $(ROOT)/etc/init.d
 	$(INSTALL) -m755  $(INITSCRIPTS)  $(ROOT)/etc/init.d
 	
 clean::
 	rm -f $(NAME).spec.in
+	-rm zfs-version.mk
+

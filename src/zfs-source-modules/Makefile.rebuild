@@ -75,6 +75,7 @@
 #
 
 
+include zfs-version.mk
 SHELL = /bin/bash
 UNAME = /bin/uname
 TR = /usr/bin/tr
@@ -86,17 +87,15 @@ TOPDIR = $(ZFS_HOME)/rpmbuild
 BUILDROOT = $(TOPDIR)/BUILDROOT
 RPMHOME = $(TOPDIR)/RPMS/$(ARCH)
 
-SPL-RELEASE = 0.6.2
-SPL-SRPM =  $(wildcard  spl-kmod-$(SPL-RELEASE)-*.src.rpm)
-SPL-MODULE = /lib/modules/$(KERNEL_VERSION)/extra/spl/spl/spl.ko
+SPL_SRPM =  $(wildcard  spl-kmod-$(SPL_RELEASE)-*.src.rpm)
+SPL_MODULE = /lib/modules/$(KERNEL_VERSION)/extra/spl/spl/spl.ko
 
 
-ZFS-RELEASE = 0.6.2
-ZFS-SRPM =  $(wildcard  zfs-kmod-$(ZFS-RELEASE)-*.src.rpm)
-ZFS-MODULE = /lib/modules/$(KERNEL_VERSION)/extra/zfs/zfs/zfs.ko
+ZFS_SRPM =  $(wildcard  zfs-kmod-$(ZFS_RELEASE)-*.src.rpm)
+ZFS_MODULE = /lib/modules/$(KERNEL_VERSION)/extra/zfs/zfs/zfs.ko
 
 
-rebuild: DIRS $(SPL-MODULE) $(ZFS-MODULE)
+rebuild: DIRS $(SPL_MODULE) $(ZFS_MODULE)
 
 force: clean rebuild
 
@@ -104,23 +103,23 @@ DIRS:
 	if [ ! -d $(BUILDROOT) ]; then \
 		mkdir -p $(BUILDROOT); \
 	fi
-$(SPL-MODULE):
-	echo "=======  Rebuilding: $(SPL-SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(SPL-SRPM) &> $(SPL-SRPM).build.out
+$(SPL_MODULE):
+	echo "=======  Rebuilding: $(SPL_SRPM)"
+	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(SPL_SRPM) &> $(SPL_SRPM).build.out
 	# need to force install RPM so that zfs-module will build
 	rpm -ivh --force $(RPMHOME)/kmod-spl*.rpm
 	
-$(ZFS-MODULE):
-	echo "=======  Rebuilding: $(ZFS-SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(ZFS-SRPM) &> $(ZFS-SRPM).build.out
+$(ZFS_MODULE):
+	echo "=======  Rebuilding: $(ZFS_SRPM)"
+	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(ZFS_SRPM) &> $(ZFS_SRPM).build.out
 	# need to force install RPM so that zfs-module will build
 	rpm -ivh --force $(RPMHOME)/kmod-zfs*.rpm 
 	
 
 files:
-	echo $(SPL-MODULE) $(ZFS-MODULE)
-	ls -l $(SPL-MODULE) $(ZFS-MODULE)
+	echo $(SPL_MODULE) $(ZFS_MODULE)
+	ls -l $(SPL_MODULE) $(ZFS_MODULE)
 
 clean: 
-	if [ -f $(SPL-MODULE) ]; then /bin/rm $(SPL-MODULE); fi
-	if [ -f $(ZFS-MODULE) ]; then /bin/rm $(ZFS-MODULE); fi
+	if [ -f $(SPL_MODULE) ]; then /bin/rm $(SPL_MODULE); fi
+	if [ -f $(ZFS_MODULE) ]; then /bin/rm $(ZFS_MODULE); fi

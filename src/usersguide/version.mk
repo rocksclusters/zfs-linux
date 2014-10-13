@@ -1,5 +1,7 @@
+include $(CURDIR)/../../zfs-version.mk
+include zfs-version.mk
 ROLL			= zfs-linux
-VERSION			= 0.6
+VERSION			= $(ZFS_VERSION)
 NAME    		= roll-$(ROLL)-usersguide
 RELEASE			= 0
 

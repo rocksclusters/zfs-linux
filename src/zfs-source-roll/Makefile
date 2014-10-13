@@ -75,6 +75,11 @@ PKGROOT = /opt/zfs
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
+Makefile: zfs-version.mk
+
+zfs-version.mk:
+	if [ -e ../../zfs-version.mk ]; then /bin/cp ../../zfs-version.mk .; fi 
+
 build:
 
 install::
@@ -87,3 +92,4 @@ install::
 
 clean::
 	rm -f $(NAME).spec.in
+	-rm zfs-version.mk
