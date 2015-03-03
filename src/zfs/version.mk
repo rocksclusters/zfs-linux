@@ -3,5 +3,5 @@ include zfs-version.mk
 NAME    	= zfs
 VERSION		= $(ZFS_VERSION)
 RC		= 
-RELEASE 	= 
+RELEASE 	= $(ZFS_RELEASE)
 TARBALL_POSTFIX	= tar.gz

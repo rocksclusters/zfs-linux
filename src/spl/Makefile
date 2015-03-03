@@ -68,7 +68,6 @@ TAR = /bin/tar
 ARCH = $(shell /bin/uname -p)
 REDHAT.ROOT = $(CURDIR)/../../
 
-
 Makefile: zfs-version.mk
 
 zfs-version.mk:
@@ -76,11 +75,12 @@ zfs-version.mk:
 
 
 rpm pkg: RPMDIRS
-	gunzip -c $(NAME)-$(VERSION)$(RC)$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
+	gunzip -c $(NAME)-$(VERSION)$(RC)-$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 								\
-		cd $(NAME)-$(VERSION)$(RC)$(RELEASE);				\
+		cd $(NAME)-$(NAME)-$(VERSION)$(RC)-$(RELEASE);		\
+		./autogen.sh;						\
 		./configure;						\
-		$(MAKE) rpm;						\
+		$(MAKE) rpms;						\
 		/bin/cp *$(ARCH).rpm $(REDHAT.ROOT)/RPMS/$(ARCH);	\
 		/bin/cp *src.rpm $(REDHAT.ROOT)/SRPMS;	\
 	)
