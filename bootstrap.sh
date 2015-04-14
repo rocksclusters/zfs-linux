@@ -79,6 +79,8 @@ https://github.com/rocksclusters-attic"
 	exit 1
 fi
 
+export SURL=http://forge.sdsc.edu/triton
+
 . $ROLLSROOT/etc/bootstrap-functions.sh
 
 if [ `./_os` == "linux" ]; then
