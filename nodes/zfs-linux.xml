@@ -67,7 +67,6 @@
              different kernel versions. See /opt/zfs/bin -->
 	<package>zfs-source-modules</package>
 
-	<package>zed-support</package>
 <post>
 <!-- Turn on Automatic Module Rebuilding --> 
 <!-- Turn on the ZFS event Daemon --> 
@@ -77,8 +76,6 @@
 if [ -f /etc/init.d/zfs-modules ]; then
 	/sbin/chkconfig --add zfs-modules
 	/sbin/chkconfig zfs-modules on
-	/sbin/chkconfig --add zed
-	/sbin/chkconfig zed on
 <file name="/etc/zfs/zed.d/zed.rc" mode="append">
 ZED_EMAIL=&Info_ClusterContact;
 ZED_EMAIL_VERBOSE=1
@@ -90,7 +87,8 @@ fi
 
 
 # double check that the package with kernel number are installed
-package_version="-0.6.3-1.el6.x86_64"
+# FIXME: This should be read from zfs-version.mk in the directory above
+package_version="-0.6.5-1.el6.x86_64"
 # rpm -q wants the package version in the name with these packages
 # i do not understand why....
 kernel_version="`/bin/uname -r`$package_version"
