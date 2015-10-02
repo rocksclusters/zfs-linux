@@ -1,4 +1,4 @@
-93ba8f26ef49305f646664b90bba1053e069aa41  src/spl/spl-0.6.4.2.tar.gz
 1df253e95a9440adbf50f3e4b1ebcd5dec91def0  src/spl/spl-0.6.5.tar.gz
-e4e25a594db919ff1c6a332fa89a9ea7657dccf8  src/zfs/zfs-0.6.4.2.tar.gz
 ffd38904883befc1b6b2ae5543599236998ec17a  src/zfs/zfs-0.6.5.tar.gz
+6e02b26a9c63b294c0730da7f104d266a68f016d  src/spl/spl-0.6.5.2.tar.gz
+6aff4e044aa0be79cc14b8c12f5d805485cd208c  src/zfs/zfs-0.6.5.2.tar.gz

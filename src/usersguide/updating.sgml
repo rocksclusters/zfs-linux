@@ -14,8 +14,7 @@ and at the same time make sure the roll is in the <emphasis>local cluster</empha
 </para>
 
 <para>
-This version of the zfs-linux roll requires you to manually build and add the binary version 
-of the roll.
+This version of the zfs-linux roll requires you to manually build and add the binary version of the roll.
 </para>
 
 <warning>
@@ -31,15 +30,85 @@ build on a development server appliance.
 
 <para>
 If the ZFS source roll is not available for the version of ZFS-on-Linux that
-you require, then you should go to github.com. In particular,
+you require, then you should go to github.com so that you can first
+<emphasis>create a source roll</emphasis>. In particular,
 <computeroutput>https://github.com/rocksclusters/zfs-linux</computeroutput>. 
 You should clone the repository. THe following shows read-only access to the github repository. 
 <screen>
 # git clone https://github.com/rocksclusters/zfs-linux.git 
-# cd zfs-linux
-# make binary-roll
 </screen>
 </para>
+<para>
+At this point, you have cloned the repository locally. You will need to populate the source tarballs.
+<screen>
+# cd zfs-linux
+# make download 
+</screen>
+</para>
+<para>
+If the version of spl/zfs is NOT the one you want, then you need to download/create tarballs of spl and zfs and edit zfs-version.mk in the top level. The following is an example of how to create the tarball for spl
+</para>
+</section>
+
+<section id="updating-to-a-new-roll-version" xreflabel="Updating With a New Rocks Source Roll">
+<title>Updating with a new Rocks Source Roll</title>
+
+<para>
+Here we will use an update from version 0.6.4.1 to 0.6.5.2 of the roll. This assumes you have downloaded a newer source roll (a source roll is one in which the ZFS binaries have not already been built for your system). The particular steps will accomplish the source roll installation so that you can build the binary roll
+
+<screen>
+# (cd /opt/zfs/zfs-linux-roll-source; make clean) 
+# rocks remove roll zfs-linux 
+# rocks add roll zfs-linux-*0.6.5.2*iso
+# rocks enable roll zfs-linux 
+# cd /export/rocks/install; rocks create distro
+# yum clean all; yum update zfs-source-roll
+</screen>
+</para>
+<para>
+Now that you have updated the <emphasis>source</emphasis> version of the Roll, you need to rebuild the binary roll.
+<screen>
+# cd /opt/zfs/zfs-linux-roll-source; make binary-roll 
+# rocks add roll zfs-linux-*0.6.5.2*iso
+# cd /export/rocks/install; rocks create distro
+# yum clean all; yum update 
+</screen>
+</para>
+<note>
+<para>
+It is possible that you will see errors on rebuilding the binary roll on a system with ZFS running
+if you see a screen that looks like:
+<screen>
+configure: error: 
+	*** Please make sure the kmod spl devel &lt;kernel&gt; package for your
+	*** distribution is installed then try again.  If that fails you
+	*** can specify the location of the spl objects with the
+	*** '--with-spl-obj=PATH' option.
+make[4]: Entering directory `/opt/zfs/zfs-linux-roll-source/src/zfs/zfs-0.6.5.2'
+make[4]: Nothing to be done for `rpm'.
+make[4]: Leaving directory `/opt/zfs/zfs-linux-roll-source/src/zfs/zfs-0.6.5.2'
+/bin/cp: cannot stat `*x86_64.rpm': No such file or directory
+/bin/cp: cannot stat `*src.rpm': No such file or directory
+make[3]: *** [rpm] Error 1
+make[3]: Leaving directory `/opt/zfs/zfs-linux-roll-source/src/zfs'
+make[2]: *** [rpm] Error 2
+make[2]: Leaving directory `/opt/zfs/zfs-linux-roll-source/src'
+make[1]: *** [rpms] Error 2
+make[1]: Leaving directory `/opt/zfs/zfs-linux-roll-source'
+make: *** [binary-roll] Error 2
+</screen>
+Do not panic. Simply rebuild the binary roll a second time with
+<screen>
+make binary-roll
+</screen>
+This allows the updated spl module to propagate through various software layers so that zfs will build correctly.
+</para>
+</note>
+
+</section>
+
+<section id="rebuilding-the-binary-roll" xreflabel="Rebuilding the Binary Roll">
+<title>Rebuilding a Binary Roll when ZFS is already installed</title>
 <note>
 <para>
 Please see the section on "Installing the Roll" to see a proper build. Remember to add the binary roll (iso image) that was created above and then recreate 
@@ -61,7 +130,7 @@ Now that your updated binary has been created and you have properly rebuilt the 
 a system that has its ZFS RPMS already installed.  If ZFS is running on a node it is recommended to first stop zfs and then unload the zfs modules (this works also for a frontend)
 <screen>
 # zfs umount -a 
-# service zfs stop
+# service zfs-zed stop
 # rmmod zfs zcommon znvpair zavl zunicode spl zlib_deflate
 </screen>
 </para>
@@ -71,111 +140,124 @@ properly accomplish the update
 <screen>
 # yum clean all 
 # yum update zfs 
-# service start zfs 
+# modprobe zfs 
 </screen>
 </para>
 <para>
-The following, very long screen dump illustrates the output of the update process. Please note it can take several minutes for the update to complete because DKMS is rebuilding modules.
+The following, very long screen dump illustrates the output of the update process. 
 <screen>
-Loading new spl-0.6.2 DKMS files...
-First Installation: checking all kernels...
-Building only for 2.6.32-279.14.1.el6.x86_64
-Building initial module for 2.6.32-279.14.1.el6.x86_64
-Done.
+# yum update zfs
+Setting up Update Process
+Rocks-6.1                                                                              | 3.6 kB     00:00     
+Rocks-6.1/primary_db                                                                   | 2.3 MB     00:00     
+Resolving Dependencies
+--> Running transaction check
+---> Package zfs.x86_64 0:0.6.5-1.el6 will be updated
+--> Processing Dependency: zfs(x86-64) = 0.6.5-1.el6 for package: zfs-test-0.6.5-1.el6.x86_64
+--> Processing Dependency: zfs(x86-64) = 0.6.5-1.el6 for package: zfs-dracut-0.6.5-1.el6.x86_64
+---> Package zfs.x86_64 0:0.6.5.2-1.el6 will be an update
+--> Processing Dependency: zfs-kmod = 0.6.5.2 for package: zfs-0.6.5.2-1.el6.x86_64
+--> Processing Dependency: libzpool2 = 0.6.5.2 for package: zfs-0.6.5.2-1.el6.x86_64
+--> Processing Dependency: libzfs2 = 0.6.5.2 for package: zfs-0.6.5.2-1.el6.x86_64
+--> Processing Dependency: libuutil1 = 0.6.5.2 for package: zfs-0.6.5.2-1.el6.x86_64
+--> Processing Dependency: libnvpair1 = 0.6.5.2 for package: zfs-0.6.5.2-1.el6.x86_64
+--> Running transaction check
+---> Package kmod-zfs-2.6.32-573.3.1.el6.x86_64.x86_64 0:0.6.5-1.el6 will be updated
+---> Package kmod-zfs-2.6.32-573.3.1.el6.x86_64.x86_64 0:0.6.5.2-1.el6 will be an update
+---> Package libnvpair1.x86_64 0:0.6.5-1.el6 will be updated
+---> Package libnvpair1.x86_64 0:0.6.5.2-1.el6 will be an update
+---> Package libuutil1.x86_64 0:0.6.5-1.el6 will be updated
+---> Package libuutil1.x86_64 0:0.6.5.2-1.el6 will be an update
+---> Package libzfs2.x86_64 0:0.6.5-1.el6 will be updated
+---> Package libzfs2.x86_64 0:0.6.5.2-1.el6 will be an update
+---> Package libzpool2.x86_64 0:0.6.5-1.el6 will be updated
+---> Package libzpool2.x86_64 0:0.6.5.2-1.el6 will be an update
+---> Package zfs-dracut.x86_64 0:0.6.5-1.el6 will be updated
+---> Package zfs-dracut.x86_64 0:0.6.5.2-1.el6 will be an update
+---> Package zfs-test.x86_64 0:0.6.5-1.el6 will be updated
+---> Package zfs-test.x86_64 0:0.6.5.2-1.el6 will be an update
+--> Finished Dependency Resolution
 
-spl:
-Running module version sanity check.
- - Original module
-   - This kernel never originally had a module by this name
- - Multiple same named modules!
-   - 2 named spl.ko in /lib/modules/2.6.32-279.14.1.el6.x86_64/
-   - All instances of this module will now be stored for reference purposes ONLY
-   - Storing in /var/lib/dkms/spl/original_module/2.6.32-279.14.1.el6.x86_64/x86_64/collisions/
-     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/spl.ko
-     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/spl/spl/spl.ko
- - Installation
-   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
+Dependencies Resolved
 
-splat.ko:
-Running module version sanity check.
- - Original module
-   - This kernel never originally had a module by this name
- - Multiple same named modules!
-   - 2 named splat.ko in /lib/modules/2.6.32-279.14.1.el6.x86_64/
-   - All instances of this module will now be stored for reference purposes ONLY
-   - Storing in /var/lib/dkms/spl/original_module/2.6.32-279.14.1.el6.x86_64/x86_64/collisions/
-     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/splat.ko
-     - Stored /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/spl/splat/splat.ko
- - Installation
-   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
-Adding any weak-modules
+==============================================================================================================
+ Package                                     Arch            Version                 Repository          Size
+==============================================================================================================
+Updating:
+ zfs                                         x86_64          0.6.5.2-1.el6           Rocks-6.1          340 k
+Updating for dependencies:
+ kmod-zfs-2.6.32-573.3.1.el6.x86_64          x86_64          0.6.5.2-1.el6           Rocks-6.1          601 k
+ libnvpair1                                  x86_64          0.6.5.2-1.el6           Rocks-6.1           73 k
+ libuutil1                                   x86_64          0.6.5.2-1.el6           Rocks-6.1           76 k
+ libzfs2                                     x86_64          0.6.5.2-1.el6           Rocks-6.1          288 k
+ libzpool2                                   x86_64          0.6.5.2-1.el6           Rocks-6.1          1.2 M
+ zfs-dracut                                  x86_64          0.6.5.2-1.el6           Rocks-6.1           11 k
+ zfs-test                                    x86_64          0.6.5.2-1.el6           Rocks-6.1           45 k
 
-Running the post_install script:
+Transaction Summary
+==============================================================================================================
+Upgrade       8 Package(s)
 
-depmod...
+Total download size: 2.6 M
+Downloading Packages:
+(1/8): kmod-zfs-2.6.32-573.3.1.el6.x86_64-0.6.5.2-1.el6.x86_64.rpm                     | 601 kB     00:00     
+(2/8): libnvpair1-0.6.5.2-1.el6.x86_64.rpm                                             |  73 kB     00:00     
+(3/8): libuutil1-0.6.5.2-1.el6.x86_64.rpm                                              |  76 kB     00:00     
+(4/8): libzfs2-0.6.5.2-1.el6.x86_64.rpm                                                | 288 kB     00:00     
+(5/8): libzpool2-0.6.5.2-1.el6.x86_64.rpm                                              | 1.2 MB     00:00     
+(6/8): zfs-0.6.5.2-1.el6.x86_64.rpm                                                    | 340 kB     00:00     
+(7/8): zfs-dracut-0.6.5.2-1.el6.x86_64.rpm                                             |  11 kB     00:00     
+(8/8): zfs-test-0.6.5.2-1.el6.x86_64.rpm                                               |  45 kB     00:00     
+--------------------------------------------------------------------------------------------------------------
+Total                                                                          49 MB/s | 2.6 MB     00:00     
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+  Updating   : libuutil1-0.6.5.2-1.el6.x86_64                                                            1/16 
+  Updating   : libnvpair1-0.6.5.2-1.el6.x86_64                                                           2/16 
+  Updating   : libzpool2-0.6.5.2-1.el6.x86_64                                                            3/16 
+  Updating   : libzfs2-0.6.5.2-1.el6.x86_64                                                              4/16 
+  Updating   : kmod-zfs-2.6.32-573.3.1.el6.x86_64-0.6.5.2-1.el6.x86_64                                   5/16 
+  Updating   : zfs-0.6.5.2-1.el6.x86_64                                                                  6/16 
+  Updating   : zfs-test-0.6.5.2-1.el6.x86_64                                                             7/16 
+  Updating   : zfs-dracut-0.6.5.2-1.el6.x86_64                                                           8/16 
+  Cleanup    : zfs-dracut-0.6.5-1.el6.x86_64                                                             9/16 
+  Cleanup    : zfs-test-0.6.5-1.el6.x86_64                                                              10/16 
+  Cleanup    : kmod-zfs-2.6.32-573.3.1.el6.x86_64-0.6.5-1.el6.x86_64                                    11/16 
+  Cleanup    : zfs-0.6.5-1.el6.x86_64                                                                   12/16 
+  Cleanup    : libzfs2-0.6.5-1.el6.x86_64                                                               13/16 
+  Cleanup    : libzpool2-0.6.5-1.el6.x86_64                                                             14/16 
+  Cleanup    : libnvpair1-0.6.5-1.el6.x86_64                                                            15/16 
+  Cleanup    : libuutil1-0.6.5-1.el6.x86_64                                                             16/16 
+  Verifying  : libnvpair1-0.6.5.2-1.el6.x86_64                                                           1/16 
+  Verifying  : libzfs2-0.6.5.2-1.el6.x86_64                                                              2/16 
+  Verifying  : zfs-test-0.6.5.2-1.el6.x86_64                                                             3/16 
+  Verifying  : libzpool2-0.6.5.2-1.el6.x86_64                                                            4/16 
+  Verifying  : kmod-zfs-2.6.32-573.3.1.el6.x86_64-0.6.5.2-1.el6.x86_64                                   5/16 
+  Verifying  : libuutil1-0.6.5.2-1.el6.x86_64                                                            6/16 
+  Verifying  : zfs-0.6.5.2-1.el6.x86_64                                                                  7/16 
+  Verifying  : zfs-dracut-0.6.5.2-1.el6.x86_64                                                           8/16 
+  Verifying  : zfs-test-0.6.5-1.el6.x86_64                                                               9/16 
+  Verifying  : zfs-dracut-0.6.5-1.el6.x86_64                                                            10/16 
+  Verifying  : kmod-zfs-2.6.32-573.3.1.el6.x86_64-0.6.5-1.el6.x86_64                                    11/16 
+  Verifying  : libuutil1-0.6.5-1.el6.x86_64                                                             12/16 
+  Verifying  : libzpool2-0.6.5-1.el6.x86_64                                                             13/16 
+  Verifying  : zfs-0.6.5-1.el6.x86_64                                                                   14/16 
+  Verifying  : libnvpair1-0.6.5-1.el6.x86_64                                                            15/16 
+  Verifying  : libzfs2-0.6.5-1.el6.x86_64                                                               16/16 
 
-DKMS: install completed.
-  Updating   : zfs-dkms-0.6.2-1.el6.noarch                                                        3/12
+Updated:
+  zfs.x86_64 0:0.6.5.2-1.el6                                                                                  
 
-DKMS: install completed.
-  Updating   : zfs-dkms-0.6.2-1.el6.noarch                                                        3/12
-Loading new zfs-0.6.2 DKMS files...
-First Installation: checking all kernels...
-Building only for 2.6.32-279.14.1.el6.x86_64
-Building initial module for 2.6.32-279.14.1.el6.x86_64
-Done.
+Dependency Updated:
+  kmod-zfs-2.6.32-573.3.1.el6.x86_64.x86_64 0:0.6.5.2-1.el6         libnvpair1.x86_64 0:0.6.5.2-1.el6        
+  libuutil1.x86_64 0:0.6.5.2-1.el6                                  libzfs2.x86_64 0:0.6.5.2-1.el6           
+  libzpool2.x86_64 0:0.6.5.2-1.el6                                  zfs-dracut.x86_64 0:0.6.5.2-1.el6        
+  zfs-test.x86_64 0:0.6.5.2-1.el6                                  
 
-zavl:
-Running module version sanity check.
-Error! Module version 5835515F233A845D5B11799 for zavl.ko
-is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (5835515F233A845D5B11799).
-You may override by specifying --force.
+Complete!
 
-znvpair.ko:
-Running module version sanity check.
- - Original module
-   - This kernel never originally had a module by this name
- - Installation
-   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
-
-zunicode.ko:
-Running module version sanity check.
-Error! Module version 943EB776D6CC4E1BCED8C36 for zunicode.ko
-is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (943EB776D6CC4E1BCED8C36).
-You may override by specifying --force.
-
-zcommon.ko:
-Running module version sanity check.
-Error! Module version AAFC52164DACC53F936858E for zcommon.ko
-is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (AAFC52164DACC53F936858E).
-You may override by specifying --force.
-
-zfs.ko:
-Running module version sanity check.
- - Original module
-   - This kernel never originally had a module by this name
- - Installation
-   - Installing to /lib/modules/2.6.32-279.14.1.el6.x86_64/extra/
-
-zpios.ko:
-Running module version sanity check.
-Error! Module version B42A8936432BDCB399805C0 for zpios.ko
-is not newer than what is already found in kernel 2.6.32-279.14.1.el6.x86_64 (B42A8936432BDCB399805C0).
-You may override by specifying --force.
-Adding any weak-modules
-
-Running the post_install script:
-
-depmod...
-
-DKMS: install completed.
-  Updating   : zfs-0.6.2-1.el6.x86_64                                                             4/12
-  Updating   : zfs-dracut-0.6.2-1.el6.x86_64                                                      5/12
-  Updating   : zfs-test-0.6.2-1.el6.x86_64                                                        6/12
-  Cleanup    : zfs-test-0.6.1-1.el6.x86_64                                                        7/12
-  Cleanup    : zfs-0.6.1-1.el6.x86_64                                                             8/12
-  Cleanup    : zfs-dracut-0.6.1-1.el6.x86_64                                                      9/12
-  Cleanup    : zfs-dkms-0.6.1-2.el6.noarch                                                       10/12
 </screen>
 </para>
 <para>
