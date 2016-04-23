@@ -75,8 +75,17 @@
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
+include zfs-version.mk
+
 
 default: roll
+
+preroll::
+	for i in `ls nodes/*.xml.in`; do \
+	    export o=`echo $$i | sed 's/\.in//'`; \
+	    cp $$i $$o; \
+	    sed -i "s/SPL_VERSION/$(SPL_VERSION)/g; s/RELEASE/$(RELEASE)/g" $$o; \
+	done
 
 bootstrap:
 	sh ./bootstrap.sh
@@ -87,12 +96,18 @@ binary-roll: bootstrap
 binary-roll-nobootstrap:
 	make ZFS-BINARY-ROLL="True" roll
 
+clean-nodes:: clean
+	for i in `ls nodes/*.xml.in`; do \
+	    export o=`echo $$i | sed 's/\.in//'`; \
+	    rm -rf  $$o; \
+	done
+
 clean::
-	- /bin/rm _arch
-	- /bin/rm bootstrap.py 
+	- /bin/rm -f _arch
+	- /bin/rm -f bootstrap.py 
 
 clean-rpms:
 	- /bin/rm -r RPMS SRPMS
 
 veryclean: 
-	make ZFS-BINARY-ROLL="True" clean-rpms clean
+	make ZFS-BINARY-ROLL="True" clean-rpms clean-nodes clean

@@ -61,17 +61,15 @@
 	<package>kmod-zfs-*</package>
 
 
-
-
 	<!-- *modules* packages can be rebuilt if server and clients have
              different kernel versions. See /opt/zfs/bin -->
 	<package>zfs-source-modules</package>
 
 <post>
-<!-- Turn on Automatic Module Rebuilding --> 
-<!-- Turn on the ZFS event Daemon --> 
-<!-- This will only appear if the binary version of this roll has been
-     built by the user -->
+<!-- Turn on Automatic Module Rebuilding 
+     Turn on the ZFS event Daemon 
+     This will only appear if the binary version of this roll has been built by the user 
+-->
 
 if [ -f /etc/init.d/zfs-modules ]; then
 	/sbin/chkconfig --add zfs-modules
@@ -82,13 +80,10 @@ ZED_EMAIL_VERBOSE=1
 </file>
 fi
 
-
-
-
-
 # double check that the package with kernel number are installed
-# FIXME: This should be read from zfs-version.mk in the directory above
-package_version="-0.6.5-1.el6.x86_64"
+# This is read from zfs-version.mk and is made with preroll target
+package_version="-SPL_VERSION-RELEASE.el6.x86_64"
+
 # rpm -q wants the package version in the name with these packages
 # i do not understand why....
 kernel_version="`/bin/uname -r`$package_version"
@@ -99,7 +94,6 @@ for i in $package_list; do
                 /usr/bin/yum install $i;
         fi
 done
-
 
 </post>
 </kickstart>

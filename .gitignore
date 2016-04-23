@@ -2,6 +2,7 @@
 # build directory
 BUILD/
 RPMS/
+SRPMS/
 SOURCES/
 SPECS/
 
@@ -28,9 +29,6 @@ Rules-scripts.mk
 Rules.mk
 Rolls.mk
 
-# --- BEGIN --- binaries files
-src/spl/spl-0.6.2.tar.gz
-src/zfs/zfs-0.6.2.tar.gz
-src/spl/spl-0.6.3.tar.gz
-src/zfs/zfs-0.6.3.tar.gz
-# --- END ---
+# ignore binaries files
+src/spl/spl-0.*.tar.gz
+src/zfs/zfs-0.*.tar.gz
