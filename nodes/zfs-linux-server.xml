@@ -37,6 +37,7 @@
              See /opt/zfs -->
 	<package>zfs-source-roll</package>
 	<package>roll-zfs-linux-usersguide</package>
+	<package cond="rocks_version_major &gt;= 7">libattr-devel</package>
 
 <post>
 /opt/rocks/bin/rocks set appliance attr frontend zfs true

@@ -52,7 +52,7 @@
 	<package>zfs</package>
 	<package>zfs-devel</package>
 	<package>zfs-dracut</package>
-	<package>zfs-test</package>
+	<package cond="rocks_version_major == 6">zfs-test</package>
 	<!-- 
 		kmod-zfs-$kernel_version
 		kmod-zfs-devel-$kernel_version
