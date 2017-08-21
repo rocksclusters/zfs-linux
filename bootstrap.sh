@@ -82,7 +82,7 @@ fi
 . $ROLLSROOT/etc/bootstrap-functions.sh
 
 if [ `./_os` == "linux" ]; then
-	yum -y install libattr-devel
+	yum -y install kernel-devel libattr-devel
 	kernel_version=`uname -r`
 	compile spl
 	install spl
