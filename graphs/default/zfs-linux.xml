@@ -31,6 +31,7 @@
 
 	<edge from="server">
 	     <to>zfs-linux-server</to>
+	     <to>zfs-linux</to>
 	</edge>
 	<edge cond="zfs" from="base">
 	     <to>zfs-linux</to>
