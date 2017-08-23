@@ -1,0 +1,11 @@
+[Unit]
+Description=On Demand Rebuild of SPL/ZFS modules
+Before=zfs-import-scan.service
+Before=zfs-import-cache.service
+
+[Service]
+Type=oneshot
+ExecStart=make -C /opt/zfs rebuild
+
+[Install]
+WantedBy=zfs.target

@@ -1,6 +1,5 @@
-#!/bin/bash
-#
-# $Id: zfs-rebuild-module.sh,v 1.2 2012/11/27 00:49:42 phil Exp $
+# --------------------------------------------------- -*- Makefile -*- --
+# $Id: Makefile,v 1.4 2012/11/27 00:49:42 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,27 +54,40 @@
 # 
 # @Copyright@
 #
-#
-# $Log: zfs-rebuild-module.sh,v $
-# Revision 1.2  2012/11/27 00:49:42  phil
+# $Log: Makefile,v $
+# Revision 1.4  2012/11/27 00:49:42  phil
 # Copyright Storm for Emerald Boa
+#
+# Revision 1.3  2012/10/04 21:50:52  phil
+# Update to rc11
+#
+# Revision 1.2  2012/05/13 19:25:20  phil
+# Updating method for building, updating of modules when you have updated the kernel,
+# documentation
 #
 # Revision 1.1  2012/05/12 06:34:18  phil
 # Start of ZFS on Linux Roll
 #
 
+REDHAT.ROOT = $(CURDIR)/../../
+PKGROOT = /opt/zfs
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
 
-ARCH=`uname -p`
-KERNEL_VERSION=`uname -r`
-KERNEL=`uname -r | tr '-' '_'`
-ZFS_HOME=/opt/zfs
-RPMHOME=/root/rpmbuild/RPMS/$ARCH
-NEWRPMS=
+INITSCRIPTS = zfs-modules 
 
-for srpm in $ZFS_HOME/spl-module*.src.rpm $ZFS_HOME/zfs-module*.src.rpm; do
-	echo "=======  Rebuilding: $srpm"
-	rpmbuild --rebuild --define "require_kver $KERNEL_VERSION" $srpm &> $srpm.build.out
-	rpmname=`basename $srpm | cut -d - -f 1,2`
-	# need to force install RPM so that zfs-module will build
-	rpm -ivh --force $RPMHOME/${rpmname}*${KERNEL}.rpm
-done
+Makefile: zfs-version.mk
+
+zfs-version.mk:
+	if [ -e ../../zfs-version.mk ]; then /bin/cp ../../zfs-version.mk .; fi
+
+build:
+
+install::
+	mkdir -p $(ROOT)/etc/init.d
+	$(INSTALL) -m755  $(INITSCRIPTS)  $(ROOT)/etc/init.d
+	
+clean::
+	rm -f $(NAME).spec.in
+	-rm zfs-version.mk
+

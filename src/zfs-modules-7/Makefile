@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.rebuild,v 1.5 2012/11/27 00:49:42 phil Exp $
+# $Id: Makefile,v 1.3 2012/11/27 00:48:42 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,75 +55,20 @@
 # @Copyright@
 #
 #
-# $Log: Makefile.rebuild,v $
-# Revision 1.5  2012/11/27 00:49:42  phil
-# Copyright Storm for Emerald Boa
-#
-# Revision 1.4  2012/10/04 21:50:52  phil
-# Update to rc11
-#
-# Revision 1.3  2012/07/03 02:19:32  phil
-# Update to rc9, add a section on updating an already-installed system.
-#
-# Revision 1.2  2012/06/01 23:06:50  phil
-# place the built rpms under /opt/zfs
-#
-# Revision 1.1  2012/05/13 19:25:20  phil
-# Updating method for building, updating of modules when you have updated the kernel,
-# documentation
 #
 
+REDHAT.ROOT     = $(CURDIR)/../../
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
 
-include zfs-version.mk
-SHELL = /bin/bash
-UNAME = /bin/uname
-TR = /usr/bin/tr
-ARCH = $(shell $(UNAME) -p)
-KERNEL_VERSION =$(shell $(UNAME) -r)
-KERNEL = $(shell $(UNAME) -r | $(TR) '-' '_')
-ZFS_HOME = /opt/zfs
-TOPDIR = $(ZFS_HOME)/rpmbuild
-BUILDROOT = $(TOPDIR)/BUILDROOT
-RPMHOME = $(TOPDIR)/RPMS/$(ARCH)
-
-SPL_SRPM =  $(wildcard  spl-kmod-$(SPL_VERSION)-*.src.rpm)
-SPL_MODULE = /lib/modules/$(KERNEL_VERSION)/extra/spl/spl/spl.ko
+build::
 
 
-ZFS_SRPM =  $(wildcard  zfs-kmod-$(ZFS_VERSION)-*.src.rpm)
-ZFS_MODULE = /lib/modules/$(KERNEL_VERSION)/extra/zfs/zfs/zfs.ko
+install::
+	mkdir -p $(ROOT)/$(PKGROOT)
+	(								\
+		for i in $(SCRIPTS); do 					\
+			$(INSTALL) -m 0644 $$i $(ROOT)/$(PKGROOT) ;		\
+		done								\
+	)
 
-
-moo:
-	echo $(ZFS_VERSION)
-	echo $(ZFS_SRPM)
-rebuild: DIRS $(SPL_MODULE) $(ZFS_MODULE)
-
-force: clean rebuild
-
-DIRS:
-	if [ ! -d $(BUILDROOT) ]; then \
-		mkdir -p $(BUILDROOT); \
-	fi
-$(SPL_MODULE):
-	echo "=======  Rebuilding: $(SPL_SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(SPL_SRPM) &> $(SPL_SRPM).build.out
-	# need to force install RPMS just built
-	( yum -y reinstall $(RPMHOME)/kmod-spl*.rpm
-	 if [ $$? != 0 ]; then yum -y install $(RPMHOME)/kmod-spl*.rpm; fi )
-	
-$(ZFS_MODULE):
-	echo "=======  Rebuilding: $(ZFS_SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(ZFS_SRPM) &> $(ZFS_SRPM).build.out
-	# need to force install RPMS just built
-	(yum -y reinstall $(RPMHOME)/kmod-zfs*.rpm; \
-	 if [ $$? != 0 ]; then yum -y install $(RPMHOME)/kmod-zfs*.rpm; fi )
-	
-
-files:
-	echo $(SPL_MODULE) $(ZFS_MODULE)
-	ls -l $(SPL_MODULE) $(ZFS_MODULE)
-
-clean: 
-	if [ -f $(SPL_MODULE) ]; then /bin/rm $(SPL_MODULE); fi
-	if [ -f $(ZFS_MODULE) ]; then /bin/rm $(ZFS_MODULE); fi
