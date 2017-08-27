@@ -67,6 +67,7 @@ include version.mk
 TAR = /bin/tar
 ARCH = $(shell /bin/uname -p)
 REDHAT.ROOT = $(CURDIR)/../../
+PATCHFILE = spl-$(VERSION).patch
 
 
 Makefile: zfs-version.mk
@@ -79,6 +80,7 @@ rpm pkg: RPMDIRS
 	gunzip -c $(NAME)-$(VERSION)$(RC)$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 								\
 		cd $(NAME)-$(VERSION)$(RC)$(RELEASE);				\
+		patch -p1 < ../$(PATCHFILE);				\
 		./configure;						\
 		$(MAKE) rpm;						\
 		/bin/cp *$(ARCH).rpm $(REDHAT.ROOT)/RPMS/$(ARCH);	\

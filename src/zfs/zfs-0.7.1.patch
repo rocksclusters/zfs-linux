@@ -1,0 +1,23 @@
+diff -r -c3 zfs-0.7.1-orig/scripts/kmodtool zfs-0.7.1/scripts/kmodtool
+*** zfs-0.7.1-orig/scripts/kmodtool	2017-08-08 15:58:19.000000000 -0700
+--- zfs-0.7.1/scripts/kmodtool	2017-08-27 09:57:06.653318784 -0700
+***************
+*** 153,160 ****
+  Provides:         kmod-${kmodname}-uname-r = ${kernel_uname_r}
+  Provides:         ${kmodname}-kmod = %{?epoch:%{epoch}:}%{version}-%{release}
+  Requires:         ${kmodname}-kmod-common >= %{?epoch:%{epoch}:}%{version}
+! Requires(post):   ${prefix}/sbin/depmod
+! Requires(postun): ${prefix}/sbin/depmod
+  EOF
+  
+  	if [[ ${obsolete_name} ]]; then
+--- 153,161 ----
+  Provides:         kmod-${kmodname}-uname-r = ${kernel_uname_r}
+  Provides:         ${kmodname}-kmod = %{?epoch:%{epoch}:}%{version}-%{release}
+  Requires:         ${kmodname}-kmod-common >= %{?epoch:%{epoch}:}%{version}
+! #Requires(post):   ${prefix}/sbin/depmod
+! #Requires(postun): ${prefix}/sbin/depmod
+! AutoReq:	no
+  EOF
+  
+  	if [[ ${obsolete_name} ]]; then
