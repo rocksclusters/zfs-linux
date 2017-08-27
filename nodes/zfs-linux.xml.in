@@ -72,12 +72,12 @@ ZED_EMAIL_VERBOSE=1
 </file>
 </post>
 <post cond="rocks_version_major == 7">
-systemctl enable zfs.target
-systemctl enable zfs-import-cache
-systemctl enable zfs-import-scan
-systemctl enable zfs-share
-systemctl enable zfs-zed
-systemctl enable zfs-mount
-systemctl enable zfs-modules
+/usr/bin/systemctl enable zfs.target
+/usr/bin/systemctl enable zfs-import-cache
+/usr/bin/systemctl enable zfs-import-scan
+/usr/bin/systemctl enable zfs-share
+/usr/bin/systemctl enable zfs-zed
+/usr/bin/systemctl enable zfs-mount
+/usr/bin/systemctl enable zfs-modules
 </post>
 </kickstart>
