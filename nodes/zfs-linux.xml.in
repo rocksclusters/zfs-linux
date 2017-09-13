@@ -35,6 +35,7 @@
 	<package>parted</package>
 	<package>lsscsi</package>
 	<package>kmod</package>
+	<package>ledmon</package>
 
 	<!-- ZFS Packages -->
 	<package>libnvpair1</package>

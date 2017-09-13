@@ -74,7 +74,7 @@ Makefile: zfs-version.mk
 zfs-version.mk:
 	if [ -e ../../zfs-version.mk ]; then /bin/cp ../../zfs-version.mk .; fi 
 
-rpm pkg: RPMDIRS buildreqs
+rpm pkg: RPMDIRS buildreqs addledmon
 	gunzip -c $(NAME)-$(VERSION)$(RC)$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 								\
 		cd $(NAME)-$(VERSION)$(RC)$(RELEASE);				\
@@ -93,6 +93,10 @@ RPMDIRS:
 
 buildreqs:
 	yum -y install zlib-devel libuuid-devel libblkid-devel libselinux-devel parted lsscsi
+
+addledmon:
+	yumdownloader --enablerepo=base ledmon
+	/bin/cp ledmon*$(ARCH).rpm $(REDHAT.ROOT)/RPMS/$(ARCH);	\
 
 clean:
 	-rm -rf $(NAME)-$(VERSION)$(RC)$(RELEASE)
