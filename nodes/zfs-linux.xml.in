@@ -44,10 +44,8 @@
 	<package>libzpool2</package>
 
 	<package>spl</package>
-	<package cond="not ZFS_NO_KMOD">spl-kmod</package>
 
 	<package>zfs</package>
-	<package cond="not ZFS_NO_KMOD">zfs-kmod</package>
 	<package>zfs-dracut</package>
 	<package cond="rocks_version_major == 6">zfs-test</package>
 
@@ -71,6 +69,16 @@ fi
 ZED_EMAIL=&Info_ClusterContact;
 ZED_EMAIL_VERBOSE=1
 </file>
+
+## Install spl-kmod,zfs-kmod in the post.
+## These are the kernel-specific, precompiled modules.
+## If this install fails (e.g. kernel is updated, but these packages
+## don't match, these will fail as either unavailable, or broken. 
+## in that case, the modules will be rebuilt at boot time
+
+/usr/bin/yum -y install spl-kmod
+/usr/bin/yum -y install zfs-kmod
+
 </post>
 <post cond="rocks_version_major == 7">
 /usr/bin/systemctl enable zfs.target
