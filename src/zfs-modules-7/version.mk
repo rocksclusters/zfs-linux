@@ -1,5 +1,5 @@
 NAME		= zfs-modules
-RELEASE		= 0
+RELEASE		= 1
 PKGROOT		= /etc/systemd/system
 SCRIPTS 	= zfs-modules.service 
 RPM.SCRIPTLETS.FILE = scriptlets
