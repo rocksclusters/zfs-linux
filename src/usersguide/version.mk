@@ -11,4 +11,4 @@ SUMMARY_ARCHITECTURE	= x86_64
 
 ROLL_REQUIRES		= base kernel os
 ROLL_CONFLICTS		=
-
+RPM.FILES		= /var/www/html/roll-documentation/zfs-linux/*

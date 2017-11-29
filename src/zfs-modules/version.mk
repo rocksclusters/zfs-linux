@@ -1,8 +1,9 @@
 include $(CURDIR)/../../zfs-version.mk
 include zfs-version.mk
-NAME    	= zfs-source-roll
+NAME    	= zfs-modules
 VERSION 	= $(ZFS_VERSION)
 RC		= 
 RELEASE 	= 1
 TARBALL_POSTFIX	= tar.gz
-RPM.FILES	= /opt/zfs/zfs-linux-roll-source
+RPM.FILES	= /etc/init.d/*
+RPM.REQUIRES	= zfs-source-modules

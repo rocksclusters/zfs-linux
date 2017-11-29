@@ -5,9 +5,10 @@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		         version 6.2 (SideWinder)
+# 		         version 6.2 (SideWindwer)
+# 		         version 7.0 (Manzanita)
 # 
-# Copyright (c) 2000 - 2014 The Regents of the University of California.
+# Copyright (c) 2000 - 2017 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -74,8 +75,6 @@ PKGROOT = /opt/zfs
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-INITSCRIPTS = zfs-modules 
-SCRIPTS = zfs-rebuild-module.sh
 MAKEFILE.REBUILD = Makefile.rebuild
 
 SRPMS = $(wildcard $(REDHAT.ROOT)/SRPMS/spl-kmod*.src.rpm)
@@ -92,13 +91,9 @@ build:
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	$(INSTALL) -m644  $(SRPMS)  $(ROOT)/$(PKGROOT)
-	mkdir -p $(ROOT)/$(PKGROOT)/bin
-	$(INSTALL) -m755  $(SCRIPTS)  $(ROOT)/$(PKGROOT)/bin
 	$(INSTALL) -m644  $(MAKEFILE.REBUILD)  $(ROOT)/$(PKGROOT)/Makefile
 	$(INSTALL) -m644  zfs-version.mk  $(ROOT)/$(PKGROOT)
-	mkdir -p $(ROOT)/etc/init.d
-	$(INSTALL) -m755  $(INITSCRIPTS)  $(ROOT)/etc/init.d
-	
+
 clean::
 	rm -f $(NAME).spec.in
 	-rm zfs-version.mk

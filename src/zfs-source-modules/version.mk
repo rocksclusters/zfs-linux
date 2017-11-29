@@ -5,4 +5,4 @@ VERSION 	= $(ZFS_VERSION)
 RC		= 
 RELEASE 	= 1
 TARBALL_POSTFIX	= tar.gz
-RPM.FILESLIST	= filelist
+RPM.FILES	= /opt/zfs/*

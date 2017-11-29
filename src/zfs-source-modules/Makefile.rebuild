@@ -5,9 +5,10 @@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		         version 6.2 (SideWinder)
+# 		         version 6.2 (SideWindwer)
+# 		         version 7.0 (Manzanita)
 # 
-# Copyright (c) 2000 - 2014 The Regents of the University of California.
+# Copyright (c) 2000 - 2017 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -86,14 +87,17 @@ TOPDIR = $(ZFS_HOME)/rpmbuild
 BUILDROOT = $(TOPDIR)/BUILDROOT
 RPMHOME = $(TOPDIR)/RPMS/$(ARCH)
 
-SPL_SRPM =  $(wildcard  spl-kmod-$(SPL_RELEASE)-*.src.rpm)
+SPL_SRPM =  $(wildcard  spl-kmod-$(SPL_VERSION)-*.src.rpm)
 SPL_MODULE = /lib/modules/$(KERNEL_VERSION)/extra/spl/spl/spl.ko
 
 
-ZFS_SRPM =  $(wildcard  zfs-kmod-$(ZFS_RELEASE)-*.src.rpm)
+ZFS_SRPM =  $(wildcard  zfs-kmod-$(ZFS_VERSION)-*.src.rpm)
 ZFS_MODULE = /lib/modules/$(KERNEL_VERSION)/extra/zfs/zfs/zfs.ko
 
 
+moo:
+	echo $(ZFS_VERSION)
+	echo $(ZFS_SRPM)
 rebuild: DIRS $(SPL_MODULE) $(ZFS_MODULE)
 
 force: clean rebuild
@@ -105,14 +109,16 @@ DIRS:
 $(SPL_MODULE):
 	echo "=======  Rebuilding: $(SPL_SRPM)"
 	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(SPL_SRPM) &> $(SPL_SRPM).build.out
-	# need to force install RPM so that zfs-module will build
-	rpm -ivh --force $(RPMHOME)/kmod-spl*.rpm
+	# need to force install RPMS just built
+	( yum -y reinstall $(RPMHOME)/kmod-spl*.rpm
+	 if [ $$? != 0 ]; then yum -y install $(RPMHOME)/kmod-spl*.rpm; fi )
 	
 $(ZFS_MODULE):
 	echo "=======  Rebuilding: $(ZFS_SRPM)"
 	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(ZFS_SRPM) &> $(ZFS_SRPM).build.out
-	# need to force install RPM so that zfs-module will build
-	rpm -ivh --force $(RPMHOME)/kmod-zfs*.rpm 
+	# need to force install RPMS just built
+	(yum -y reinstall $(RPMHOME)/kmod-zfs*.rpm; \
+	 if [ $$? != 0 ]; then yum -y install $(RPMHOME)/kmod-zfs*.rpm; fi )
 	
 
 files:

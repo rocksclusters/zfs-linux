@@ -4,9 +4,10 @@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		         version 6.2 (SideWinder)
+# 		         version 6.2 (SideWindwer)
+# 		         version 7.0 (Manzanita)
 # 
-# Copyright (c) 2000 - 2014 The Regents of the University of California.
+# Copyright (c) 2000 - 2017 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -67,6 +68,7 @@ include version.mk
 TAR = /bin/tar
 ARCH = $(shell /bin/uname -p)
 REDHAT.ROOT = $(CURDIR)/../../
+PATCHFILE = spl-$(VERSION).patch
 
 
 Makefile: zfs-version.mk
@@ -79,6 +81,7 @@ rpm pkg: RPMDIRS
 	gunzip -c $(NAME)-$(VERSION)$(RC)$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 								\
 		cd $(NAME)-$(VERSION)$(RC)$(RELEASE);				\
+		patch -p1 < ../$(PATCHFILE);				\
 		./configure;						\
 		$(MAKE) rpm;						\
 		/bin/cp *$(ARCH).rpm $(REDHAT.ROOT)/RPMS/$(ARCH);	\

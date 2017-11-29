@@ -4,9 +4,10 @@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		         version 6.2 (SideWinder)
+# 		         version 6.2 (SideWindwer)
+# 		         version 7.0 (Manzanita)
 # 
-# Copyright (c) 2000 - 2014 The Regents of the University of California.
+# Copyright (c) 2000 - 2017 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -67,16 +68,18 @@ include version.mk
 TAR = /bin/tar
 ARCH = $(shell /bin/uname -p)
 REDHAT.ROOT = $(CURDIR)/../../
+PATCHFILE = zfs-$(VERSION).patch
 
 Makefile: zfs-version.mk
 
 zfs-version.mk:
 	if [ -e ../../zfs-version.mk ]; then /bin/cp ../../zfs-version.mk .; fi 
 
-rpm pkg: RPMDIRS buildreqs
+rpm pkg: RPMDIRS buildreqs addledmon
 	gunzip -c $(NAME)-$(VERSION)$(RC)$(RELEASE).$(TARBALL_POSTFIX) | $(TAR) -xf -
 	( 								\
 		cd $(NAME)-$(VERSION)$(RC)$(RELEASE);				\
+		patch -p1 < ../$(PATCHFILE);				\
 		./configure;						\
 		$(MAKE) rpm;						\
 		/bin/cp *$(ARCH).rpm $(REDHAT.ROOT)/RPMS/$(ARCH);	\
@@ -91,6 +94,10 @@ RPMDIRS:
 
 buildreqs:
 	yum -y install zlib-devel libuuid-devel libblkid-devel libselinux-devel parted lsscsi
+
+addledmon:
+	yumdownloader --enablerepo=base ledmon
+	/bin/cp ledmon*$(ARCH).rpm $(REDHAT.ROOT)/RPMS/$(ARCH);	\
 
 clean:
 	-rm -rf $(NAME)-$(VERSION)$(RC)$(RELEASE)

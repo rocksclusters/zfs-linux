@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 2012/11/27 00:49:42 phil Exp $
+# $Id: Makefile,v 1.5 2012/11/27 00:48:39 phil Exp $
 #
 # @Copyright@
 # 
@@ -54,22 +54,15 @@
 # 
 # @Copyright@
 #
-# $Log: Makefile,v $
-# Revision 1.2  2012/11/27 00:49:42  phil
-# Copyright Storm for Emerald Boa
-#
-# Revision 1.1  2012/05/12 06:34:17  phil
-# Start of ZFS on Linux Roll
-#
 
--include $(shell $(ROCKSROOT)/bin/arch).mk
--include $(shell $(ROCKSROOT)/bin/os).mk
+REDHAT.ROOT = $(CURDIR)/../../
 
-default:	pkg
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
 
-copyright pkg rpm clean::
-	for i in $(SRCDIRS) ; do \
-		cd $$i; \
-		$(MAKE) $@ || exit 2 ; \
-		cd ..; \
-	done
+
+build:
+	echo "Nothing to build"
+	echo "" > $(RPM.FILESLIST) 
+install::
+	mkdir -p $(ROOT)/$(PKGROOT)
