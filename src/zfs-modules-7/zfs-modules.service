@@ -5,7 +5,7 @@ Before=zfs-import-cache.service
 
 [Service]
 Type=oneshot
-ExecStart=make -C /opt/zfs rebuild
+ExecStart=/usr/bin/make -C /opt/zfs rebuild
 
 [Install]
 WantedBy=zfs.target
