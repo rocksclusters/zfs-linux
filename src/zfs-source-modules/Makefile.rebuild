@@ -103,23 +103,32 @@ rebuild: DIRS $(SPL_MODULE) $(ZFS_MODULE)
 force: clean rebuild
 
 DIRS:
-	if [ ! -d $(BUILDROOT) ]; then \
+	@if [ ! -d $(BUILDROOT) ]; then \
 		mkdir -p $(BUILDROOT); \
 	fi
 $(SPL_MODULE):
-	echo "=======  Rebuilding: $(SPL_SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(SPL_SRPM) &> $(SPL_SRPM).build.out
-	# need to force install RPMS just built
-	( yum -y reinstall $(RPMHOME)/kmod-spl*.rpm
-	 if [ $$? != 0 ]; then yum -y install $(RPMHOME)/kmod-spl*.rpm; fi )
-	
+	@echo "=======  Rebuilding: $(SPL_SRPM)"
+	@rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(SPL_SRPM) &> $(SPL_SRPM).build.out
+	@# need to force install RPMS just built
+	@( \
+	    for r in `find $(RPMHOME) -name "kmod-spl*.rpm"`; do \
+	        echo "=======  Reinstalling: $$r"; \
+	        yum -y reinstall $$r &> $(SPL_SRPM).reinstall.out; \
+	        if [ $$? != 0 ]; then yum -y install $$r; fi ; \
+	    done \
+	)
+
 $(ZFS_MODULE):
-	echo "=======  Rebuilding: $(ZFS_SRPM)"
-	rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(ZFS_SRPM) &> $(ZFS_SRPM).build.out
-	# need to force install RPMS just built
-	(yum -y reinstall $(RPMHOME)/kmod-zfs*.rpm; \
-	 if [ $$? != 0 ]; then yum -y install $(RPMHOME)/kmod-zfs*.rpm; fi )
-	
+	@echo "=======  Rebuilding: $(ZFS_SRPM)"
+	@rpmbuild --rebuild --define "_topdir $(TOPDIR)" --define "kernels $(KERNEL_VERSION)" $(ZFS_SRPM) &> $(ZFS_SRPM).build.out
+	@# need to force install RPMS just built
+	@( \
+	    for r in `find $(RPMHOME) -name "kmod-zfs*.rpm"`; do \
+	        echo "=======  Reinstalling: $$r"; \
+	        yum -y reinstall $$r &> $(ZFS_SRPM).reinstall.out; \
+	        if [ $$? != 0 ]; then yum -y install $$r; fi ; \
+	    done \
+	)
 
 files:
 	echo $(SPL_MODULE) $(ZFS_MODULE)
