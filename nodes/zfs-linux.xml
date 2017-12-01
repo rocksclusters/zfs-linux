@@ -1,0 +1,98 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	This is the ZFS on Linux Roll
+
+	</description>
+
+	<copyright>
+	
+					Rocks(r)
+			         www.rocksclusters.org
+			         version 6.2 (SideWindwer)
+			         version 7.0 (Manzanita)
+	
+	Copyright (c) 2000 - 2017 The Regents of the University of California.
+	All rights reserved.	
+	
+	</copyright>
+
+	<changelog>
+	$Log: zfs-linux.xml,v $
+	Revision 1.3  2012/05/14 18:35:15  phil
+	Install roll source on frontends
+	
+	Revision 1.2  2012/05/13 19:25:19  phil
+	Updating method for building, updating of modules when you have updated the kernel,
+	documentation
+	
+	Revision 1.1  2012/05/12 06:34:17  phil
+	Start of ZFS on Linux Roll
+	
+	</changelog>
+	<!-- System Packages -->
+	<package>zlib-devel</package>
+	<package>libuuid-devel</package>
+	<package>libblkid-devel</package>
+	<package>libselinux-devel</package>
+	<package>parted</package>
+	<package>lsscsi</package>
+	<package>kmod</package>
+	<package>ledmon</package>
+
+	<!-- ZFS Packages -->
+	<package>libnvpair1</package>
+	<package>libuutil1</package>
+	<package>libzfs2</package>
+	<package>libzpool2</package>
+
+	<package>spl</package>
+
+	<package>zfs</package>
+	<package>zfs-dracut</package>
+	<package cond="rocks_version_major == 6">zfs-test</package>
+
+	<!-- *modules* packages can be rebuilt if server and clients have
+             different kernel versions. See /opt/zfs/bin -->
+	<package>zfs-source-modules</package>
+	<package>zfs-modules</package>
+
+<post>
+<!-- Turn on Automatic Module Rebuilding 
+     Turn on the ZFS event Daemon 
+     This will only appear if the binary version of this roll has been built by the user 
+-->
+
+if [ -f /etc/init.d/zfs-modules ]; then
+	/sbin/chkconfig --add zfs-modules
+	/sbin/chkconfig zfs-modules on
+fi
+
+<file name="/etc/zfs/zed.d/zed.rc" mode="append">
+ZED_EMAIL=&Info_ClusterContact;
+ZED_EMAIL_VERBOSE=1
+</file>
+
+## Install spl-kmod,zfs-kmod in the post.
+## These are the kernel-specific, precompiled modules.
+## If this install fails (e.g. kernel is updated, but these packages
+## don't match, these will fail as either unavailable, or broken. 
+## in that case, the modules will be rebuilt at boot time
+
+/usr/bin/yum -y install spl-kmod
+/usr/bin/yum -y install zfs-kmod
+
+</post>
+<post cond="rocks_version_major == 7">
+/usr/bin/systemctl enable zfs.target
+/usr/bin/systemctl enable zfs-import-cache
+/usr/bin/systemctl enable zfs-import-scan
+/usr/bin/systemctl enable zfs-share
+/usr/bin/systemctl enable zfs-zed
+/usr/bin/systemctl enable zfs-mount
+/usr/bin/systemctl enable zfs-modules
+</post>
+</kickstart>
