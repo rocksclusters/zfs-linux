@@ -1,5 +1,4 @@
-#
-# $Id: Makefile,v 1.5 2012/11/27 00:49:42 phil Exp $
+# $Id: Makefile,v 1.5 2012/11/27 00:48:39 phil Exp $
 #
 # @Copyright@
 # 
@@ -55,61 +54,15 @@
 # 
 # @Copyright@
 #
-# $Log: Makefile,v $
-# Revision 1.5  2012/11/27 00:49:42  phil
-# Copyright Storm for Emerald Boa
-#
-# Revision 1.4  2012/05/14 18:35:15  phil
-# Install roll source on frontends
-#
-# Revision 1.3  2012/05/13 20:45:00  phil
-# Simplify the source vs. binary roll creation logic
-#
-# Revision 1.2  2012/05/13 19:25:19  phil
-# Updating method for building, updating of modules when you have updated the kernel,
-# documentation
-#
-# Revision 1.1  2012/05/12 06:34:17  phil
-# Start of ZFS on Linux Roll
-#
-#
 
--include $(ROLLSROOT)/etc/Rolls.mk
-include Rolls.mk
-include zfs-version.mk
-UNAME=$(shell uname -r)
+REDHAT.ROOT = $(CURDIR)/../../
+
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
 
 
-default: roll
-
-preroll::
-	for i in `ls nodes/*.xml.in`; do \
-	    export o=`echo $$i | sed 's/\.in//'`; \
-	    cp $$i $$o; \
-	    sed -i "s/SPL_VERSION/$(SPL_VERSION)/g; s/RELEASE/$(RELEASE)/g; s/UNAME/$(UNAME)/g" $$o; \
-	done
-
-bootstrap:
-	sh ./bootstrap.sh
-
-binary-roll: bootstrap
-	make ZFS-BINARY-ROLL="True" roll
-
-binary-roll-nobootstrap:
-	make ZFS-BINARY-ROLL="True" roll
-
-clean-nodes:: clean
-	for i in `ls nodes/*.xml.in`; do \
-	    export o=`echo $$i | sed 's/\.in//'`; \
-	    rm -rf  $$o; \
-	done
-
-clean::
-	- /bin/rm -f _arch
-	- /bin/rm -f bootstrap.py 
-
-clean-rpms:
-	- /bin/rm -r RPMS SRPMS
-
-veryclean: 
-	make ZFS-BINARY-ROLL="True" clean-rpms clean-nodes clean
+build:
+	echo "Nothing to build"
+	echo "" > $(RPM.FILESLIST) 
+install::
+	mkdir -p $(ROOT)/$(PKGROOT)

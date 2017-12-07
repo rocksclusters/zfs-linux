@@ -76,8 +76,8 @@ ZED_EMAIL_VERBOSE=1
 ## don't match, these will fail as either unavailable, or broken. 
 ## in that case, the modules will be rebuilt at boot time
 
-/usr/bin/yum -y install spl-kmod
-/usr/bin/yum -y install zfs-kmod
+/usr/bin/yum -y install kmod-spl-UNAME
+/usr/bin/yum -y install kmod-zfs-UNAME
 
 </post>
 <post cond="rocks_version_major == 7">
