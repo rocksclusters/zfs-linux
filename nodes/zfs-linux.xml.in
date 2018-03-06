@@ -67,7 +67,7 @@ fi
 
 <file name="/etc/zfs/zed.d/zed.rc" mode="append">
 ZED_EMAIL=&Info_ClusterContact;
-ZED_EMAIL_VERBOSE=1
+ZED_NOTIFY_VERBOSE=1
 </file>
 
 ## Install spl-kmod,zfs-kmod in the post.
