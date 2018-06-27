@@ -36,6 +36,7 @@
 	<package>lsscsi</package>
 	<package>kmod</package>
 	<package>ledmon</package>
+	<package>elfutils-libelf-devel</package>
 
 	<!-- ZFS Packages -->
 	<package>libnvpair1</package>
